@@ -50,6 +50,18 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        ostella: {
+          50: "#f5f7fb",
+          100: "#e8edf6",
+          200: "#c9d6ec",
+          300: "#9eb5d9",
+          400: "#6d8cc0",
+          500: "#486aa3",
+          600: "#3a5488",
+          700: "#31446e",
+          800: "#2c3a59",
+          900: "#28334d",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
