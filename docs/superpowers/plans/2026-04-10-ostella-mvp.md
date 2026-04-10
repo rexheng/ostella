@@ -69,18 +69,20 @@ git commit -m "chore: scaffold Next.js 14 + TypeScript + Tailwind"
 
 **Heads up:** `shadcn init` will overwrite `app/globals.css` and `tailwind.config.ts` that `create-next-app` generated. Accept the overwrite — Task 0.2b reinstates the brand tokens on top of the shadcn base.
 
-- [ ] **Step 1: Initialize shadcn**
+- [ ] **Step 1: Initialize shadcn — pin to v2.1.8**
+
+**Important version pin:** `shadcn@latest` now resolves to v4, which requires Tailwind v4 and Next.js 15. Our Tailwind v3 + Next.js 14 scaffold needs the last v2 release.
 
 ```bash
-pnpm dlx shadcn@latest init
+pnpm dlx shadcn@2.1.8 init
 ```
 
-Answer prompts: Default style, Slate base color, CSS variables yes. Accept default paths.
+Answer prompts: Default style, Slate base color, CSS variables yes. Accept default paths. If running non-interactively on Windows where the `prompts` library won't accept piped input, hand-author `components.json` with `{ "style": "default", "tailwind": { "baseColor": "slate", "cssVariables": true }, "iconLibrary": "lucide" }` and the standard `lib/utils.ts` `cn` helper, then run `pnpm dlx shadcn@2.1.8 add ...` in Step 2 — v2.1.8's `add` command works non-interactively with `-y`.
 
-- [ ] **Step 2: Install the primitives listed above**
+- [ ] **Step 2: Install the primitives listed above (11 primitives)**
 
 ```bash
-pnpm dlx shadcn@latest add button card badge dialog input textarea label table select checkbox tooltip
+pnpm dlx shadcn@2.1.8 add button card badge dialog input textarea label table select checkbox tooltip -y
 ```
 
 - [ ] **Step 3: Sanity check — run dev, confirm app still loads**
