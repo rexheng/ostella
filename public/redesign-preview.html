@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ostella — Redesign Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,300;9..144,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage-50:#f3f8f4; --sage-100:#e3eee6; --sage-200:#c7dccd; --sage-300:#9bc1a6;
+    --sage-400:#6fa182; --sage-500:#4a8a5e; --sage-600:#3a6e4b; --sage-700:#2f5b3d;
+    --sage-800:#28482f; --sage-900:#1c331f;
+    --lavender-50:#f6f4fb; --lavender-100:#ece6f5; --lavender-200:#d6c9e7;
+    --lavender-300:#b9a1d3; --lavender-400:#a087c5; --lavender-500:#8b6cc2;
+    --lavender-600:#7251af; --lavender-700:#5b3f8e;
+    --cream-50:#fdfbf6; --cream-100:#f8f3e8; --cream-200:#efe5d0; --cream-300:#e2d4b2;
+    --ink-500:#5e5b53; --ink-700:#3a3833; --ink-900:#1c1b18;
+    --high:#c2554e; --moderate:#c4923a; --low:#4a8a5e;
+  }
+  *,*::before,*::after { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  body {
+    background: var(--cream-50);
+    color: var(--ink-700);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .display-xl { font-family:'Fraunces', serif; font-weight:300; font-size:72px; line-height:1.05; letter-spacing:-0.02em; color:var(--ink-900); }
+  .display-lg { font-family:'Fraunces', serif; font-weight:300; font-size:56px; line-height:1.1; letter-spacing:-0.02em; color:var(--ink-900); }
+  .display-md { font-family:'Fraunces', serif; font-weight:500; font-size:40px; line-height:1.15; color:var(--ink-900); }
+  .heading-lg { font-weight:500; font-size:28px; line-height:1.25; color:var(--ink-900); letter-spacing:-0.01em; }
+  .heading-md { font-weight:500; font-size:20px; line-height:1.35; color:var(--ink-900); }
+  .body-lg    { font-size:18px; line-height:1.55; color:var(--ink-700); }
+  .body       { font-size:16px; line-height:1.5;  color:var(--ink-700); }
+  .ui-sm      { font-size:14px; line-height:1.4;  color:var(--ink-700); font-weight:500; }
+  .micro      { font-size:12px; line-height:1.4;  color:var(--ink-500); letter-spacing:0.04em; text-transform:uppercase; }
+  .container  { max-width:1152px; margin:0 auto; padding:0 32px; }
+  .container-wide { max-width:1280px; margin:0 auto; padding:0 32px; }
+  section { padding:96px 0; }
+  hr.divider { border:none; height:1px; background:var(--cream-200); margin:0; }
+
+  /* === buttons === */
+  .btn {
+    display:inline-flex; align-items:center; gap:8px;
+    padding:14px 28px; border-radius:9999px;
+    font-weight:500; font-size:15px; text-decoration:none;
+    transition:all .2s ease;
+    border:1px solid transparent;
+  }
+  .btn-primary { background:var(--sage-600); color:var(--cream-50); }
+  .btn-primary:hover { background:var(--sage-700); transform:translateY(-1px); box-shadow:0 6px 24px -8px rgba(58,110,75,0.35); }
+  .btn-outline { background:transparent; color:var(--sage-700); border-color:var(--sage-300); }
+  .btn-outline:hover { background:var(--sage-50); }
+  .btn .arrow { display:inline-block; transition:transform .2s ease; }
+  .btn:hover .arrow { transform:translateX(3px); }
+
+  /* === cards === */
+  .card {
+    background:var(--cream-100);
+    border-radius:20px;
+    padding:32px;
+  }
+  .card-soft {
+    background:var(--cream-50);
+    border:1px solid var(--cream-200);
+    border-radius:20px;
+    padding:32px;
+  }
+  .card-stat {
+    background:var(--cream-100);
+    border-radius:20px;
+    padding:40px 32px;
+  }
+  .card-stat .num {
+    font-family:'Fraunces', serif;
+    font-weight:300;
+    font-size:80px;
+    line-height:1;
+    color:var(--sage-700);
+    letter-spacing:-0.03em;
+  }
+  .card-stat .label { margin-top:16px; color:var(--ink-700); font-size:16px; line-height:1.4; max-width:24ch; }
+  .card-stat .source { margin-top:20px; color:var(--ink-500); font-size:12px; font-style:italic; }
+
+  /* === badges === */
+  .badge {
+    display:inline-flex; align-items:center;
+    padding:4px 12px; border-radius:9999px;
+    font-size:13px; font-weight:500;
+  }
+  .badge-high     { background:#fbe9e7; color:var(--high); border:1px solid #f0c9c5; }
+  .badge-moderate { background:#fcefd9; color:var(--moderate); border:1px solid #efd8a8; }
+  .badge-low      { background:var(--sage-50); color:var(--sage-700); border:1px solid var(--sage-200); }
+  .badge-tag      { background:var(--lavender-50); color:var(--lavender-700); border:1px solid var(--lavender-200); padding:4px 10px; font-size:12px; }
+
+  /* === palette swatches === */
+  .palette-grid { display:grid; grid-template-columns:repeat(11, 1fr); gap:6px; margin-top:16px; }
+  .swatch { aspect-ratio:1; border-radius:10px; display:flex; align-items:flex-end; padding:8px; font-size:10px; color:var(--ink-900); font-weight:500; }
+  .swatch.dark { color: var(--cream-50); }
+  .palette-row + .palette-row { margin-top:24px; }
+
+  /* === hero === */
+  .hero {
+    background: linear-gradient(180deg, var(--cream-50) 0%, var(--cream-100) 100%);
+    padding:120px 0 96px;
+  }
+  .hero-eyebrow { color:var(--sage-700); font-weight:500; font-size:14px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:24px; display:inline-block; padding:6px 16px; background:var(--sage-50); border:1px solid var(--sage-200); border-radius:9999px; }
+  .hero h1 { margin:0 0 24px; max-width:18ch; }
+  .hero h1 em { color:var(--lavender-600); font-style:italic; font-weight:500; }
+  .hero p.lead { font-size:20px; color:var(--ink-500); max-width:55ch; margin:0 0 40px; line-height:1.55; }
+  .hero .ctas { display:flex; gap:16px; flex-wrap:wrap; }
+
+  /* === stat cards row === */
+  .stat-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; margin-top:48px; }
+
+  /* === how it works === */
+  .step-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:32px; margin-top:48px; }
+  .step { background:var(--cream-100); border-radius:20px; padding:32px; }
+  .step .num { font-family:'Fraunces', serif; font-weight:300; font-size:56px; line-height:1; color:var(--lavender-500); }
+  .step h3 { margin:16px 0 12px; }
+  .step p { color:var(--ink-500); margin:0; }
+
+  /* === GP dashboard preview === */
+  .dash-shell { background:white; border:1px solid var(--cream-200); border-radius:20px; overflow:hidden; box-shadow:0 1px 0 rgba(0,0,0,0.02); }
+  .dash-header { display:flex; align-items:center; justify-content:space-between; padding:20px 28px; border-bottom:1px solid var(--cream-200); }
+  .dash-header .brand { font-family:'Fraunces', serif; font-weight:500; font-size:22px; color:var(--ink-900); }
+  .dash-header .practice { color:var(--ink-500); font-size:13px; margin-left:12px; }
+  .role-switcher { display:inline-flex; background:var(--cream-100); padding:4px; border-radius:9999px; font-size:13px; font-weight:500; }
+  .role-switcher span { padding:6px 14px; border-radius:9999px; }
+  .role-switcher .active { background:var(--ink-900); color:var(--cream-50); }
+  .role-switcher .inactive { color:var(--ink-500); }
+  .dash-body { padding:32px 28px; }
+  .summary-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin:24px 0 32px; }
+  .summary { background:var(--cream-50); border:1px solid var(--cream-200); border-radius:14px; padding:20px; display:flex; align-items:center; justify-content:space-between; }
+  .summary .label { font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-500); }
+  .summary .count { font-family:'Fraunces', serif; font-weight:500; font-size:36px; color:var(--ink-900); margin-top:6px; }
+  table.worklist { width:100%; border-collapse:collapse; }
+  table.worklist th { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-500); padding:12px 16px; border-bottom:1px solid var(--cream-200); font-weight:500; }
+  table.worklist td { padding:16px; border-bottom:1px solid var(--cream-100); font-size:14px; }
+  table.worklist td.name { font-weight:500; color:var(--ink-900); }
+  table.worklist td.rr { font-family:'Fraunces', serif; font-weight:500; text-align:right; color:var(--sage-700); font-size:16px; }
+  table.worklist tr:hover td { background:var(--cream-50); }
+
+  /* === feature contribution chart preview === */
+  .chart { display:flex; flex-direction:column; gap:10px; margin-top:24px; }
+  .chart-row { display:grid; grid-template-columns:200px 1fr 80px; align-items:center; gap:16px; font-size:14px; }
+  .chart-label { text-align:right; color:var(--ink-700); }
+  .chart-bar-track { position:relative; height:24px; }
+  .chart-bar-track::before { content:''; position:absolute; left:50%; top:0; bottom:0; width:1px; background:var(--cream-200); }
+  .chart-bar { position:absolute; top:0; bottom:0; border-radius:6px; }
+  .chart-bar.pos { left:50%; background:var(--high); opacity:0.75; }
+  .chart-bar.neg { right:50%; background:var(--sage-500); opacity:0.75; }
+  .chart-value { font-family:'Fraunces', serif; font-size:14px; color:var(--ink-700); text-align:right; }
+
+  /* === preview-only label === */
+  .preview-label { position:fixed; top:24px; right:24px; background:var(--ink-900); color:var(--cream-50); padding:10px 16px; border-radius:9999px; font-size:12px; font-weight:500; letter-spacing:0.04em; z-index:10; }
+
+  /* === marquee === */
+  .marquee-section { padding:48px 0 32px; background:var(--cream-50); border-top:1px solid var(--cream-200); border-bottom:1px solid var(--cream-200); }
+  .marquee { margin-top:24px; overflow:hidden; position:relative; mask-image:linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent); -webkit-mask-image:linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent); }
+  .marquee-track { display:inline-flex; align-items:center; gap:28px; white-space:nowrap; animation: marquee 60s linear infinite; padding-right:28px; }
+  .mark { font-family:'Fraunces', serif; font-weight:500; font-size:22px; color:var(--ink-700); letter-spacing:-0.01em; opacity:0.78; }
+  .mark-dot { color:var(--sage-500); font-size:22px; }
+  @keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  .marquee:hover .marquee-track { animation-play-state:paused; }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
+  @media (max-width:900px) {
+    .display-xl { font-size:48px; }
+    .display-lg { font-size:40px; }
+    .stat-grid, .step-grid, .summary-grid, .grid-2 { grid-template-columns:1fr; }
+    .palette-grid { grid-template-columns:repeat(5, 1fr); }
+    section { padding:64px 0; }
+    .hero { padding:80px 0 64px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="preview-label">Ostella · Redesign Preview · Not Live</div>
+
+<!-- ============================== HERO ============================== -->
+<section class="hero">
+  <div class="container">
+    <span class="hero-eyebrow">Preventative care · Built for the NHS</span>
+    <h1 class="display-xl">
+      The most preventable<br>
+      women's health crisis,<br>
+      <em>caught while it still is.</em>
+    </h1>
+    <p class="lead">
+      Ostella helps NHS GPs identify the women in their practice quietly
+      walking into a preventable decade — and routes them into a
+      preventative pathway the system already has, but rarely uses in time.
+    </p>
+    <div class="ctas">
+      <a class="btn btn-primary" href="#">See the GP view <span class="arrow">→</span></a>
+      <a class="btn btn-outline" href="#">See the patient view <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== MARQUEE ============================== -->
+<section class="marquee-section">
+  <div class="container">
+    <p class="micro" style="text-align:center;color:var(--ink-500);">Built against the NHS preventative-care ecosystem</p>
+  </div>
+  <div class="marquee">
+    <div class="marquee-track">
+      <span class="mark">NICE</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">NHS England</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">Royal Osteoporosis Society</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">British Menopause Society</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">FRAX</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">NOGG Guidelines</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">Faculty of Sexual &amp; Reproductive Healthcare</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">National Hip Fracture Database</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">International Osteoporosis Foundation</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">NHS North Central London ICB</span>
+      <span class="mark-dot">·</span>
+      <!-- duplicated for seamless loop -->
+      <span class="mark">NICE</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">NHS England</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">Royal Osteoporosis Society</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">British Menopause Society</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">FRAX</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">NOGG Guidelines</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">Faculty of Sexual &amp; Reproductive Healthcare</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">National Hip Fracture Database</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">International Osteoporosis Foundation</span>
+      <span class="mark-dot">·</span>
+      <span class="mark">NHS North Central London ICB</span>
+      <span class="mark-dot">·</span>
+    </div>
+  </div>
+  <div class="container">
+    <p style="text-align:center;color:var(--ink-500);font-size:12px;font-style:italic;margin-top:16px;">
+      Names shown represent the standards, audit, and commissioning landscape Ostella is designed against. They do not constitute endorsements.
+    </p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ============================== STATS ============================== -->
+<section style="background:var(--cream-50);">
+  <div class="container">
+    <p class="micro" style="color:var(--lavender-600);">The opportunity</p>
+    <h2 class="display-lg" style="margin:12px 0 0; max-width:20ch;">A market the NHS has been told to fix.</h2>
+    <p class="body-lg" style="margin:16px 0 0;color:var(--ink-500);max-width:55ch;">
+      The economics of preventative women's health are unusually clean.
+      The cohort is large, the window is narrow, and the cost of missing
+      it is well-documented.
+    </p>
+    <div class="stat-grid">
+      <div class="card-stat">
+        <div class="num">~6.4M</div>
+        <div class="label">UK women currently in the perimenopause window — the addressable cohort.</div>
+        <div class="source">ONS population estimates, 2023</div>
+      </div>
+      <div class="card-stat">
+        <div class="num">£4.4bn</div>
+        <div class="label">Annual NHS cost of conditions diagnosable years earlier in this cohort.</div>
+        <div class="source">RCP / NICE economic modelling</div>
+      </div>
+      <div class="card-stat">
+        <div class="num">&lt; 1 in 3</div>
+        <div class="label">At-risk women receive any preventative screening before symptoms appear.</div>
+        <div class="source">Royal Osteoporosis Society audit, 2020</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ============================== WHY ============================== -->
+<section>
+  <div class="container">
+    <div class="grid-2">
+      <div>
+        <p class="micro" style="color:var(--lavender-600);">Why the window matters</p>
+        <h2 class="display-lg" style="margin:12px 0 24px;">A five-year window the NHS <em style="font-style:italic;color:var(--lavender-600);font-weight:500;">can't currently see</em>.</h2>
+        <p class="body-lg" style="margin:0 0 16px;">
+          Perimenopause — roughly ages 42 to 55 — is when women's
+          long-run health trajectories are set. The interventions that
+          change them are cheap, behavioural, and well-understood. The
+          problem is timing: by the time the symptoms force a
+          conversation, the window has usually closed.
+        </p>
+        <p class="body-lg" style="margin:0; color:var(--ink-500);">
+          Ostella is calibrated for exactly this cohort. It reads the
+          clinical history a GP already has, scores it against a
+          transparent model built on published evidence, and surfaces
+          the minority of women who need a preventative conversation now.
+        </p>
+      </div>
+      <div class="card" style="background:var(--lavender-50);">
+        <p class="micro" style="color:var(--lavender-700);">Why this window, not later</p>
+        <div style="margin-top:24px;">
+          <div style="display:flex;align-items:flex-end;gap:24px;">
+            <div style="flex:1;">
+              <div style="font-family:Fraunces,serif;font-weight:300;font-size:48px;color:var(--ink-900);">~1×</div>
+              <div class="ui-sm" style="color:var(--ink-500);">Pre</div>
+            </div>
+            <div style="flex:1;">
+              <div style="font-family:Fraunces,serif;font-weight:300;font-size:48px;color:var(--lavender-600);">4×</div>
+              <div class="ui-sm" style="color:var(--ink-500);">Peri</div>
+            </div>
+            <div style="flex:1;">
+              <div style="font-family:Fraunces,serif;font-weight:300;font-size:48px;color:var(--ink-700);">2×</div>
+              <div class="ui-sm" style="color:var(--ink-500);">Post</div>
+            </div>
+          </div>
+          <p style="margin-top:16px;color:var(--ink-700);font-size:14px;line-height:1.5;">
+            Relative rate of change in core midlife health markers across
+            the transition. Peri is when modifiable factors move fastest —
+            and when most screening pathways aren't triggered yet.
+          </p>
+          <p style="margin-top:12px;color:var(--ink-500);font-size:12px;font-style:italic;">Indicative, drawn from SWAN longitudinal cohort.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ============================== HOW IT WORKS ============================== -->
+<section style="background:var(--cream-100);">
+  <div class="container">
+    <p class="micro" style="color:var(--lavender-600);">How it works</p>
+    <h2 class="display-lg" style="margin:12px 0 0; max-width:20ch;">Three steps from screening to action.</h2>
+    <div class="step-grid">
+      <div class="step">
+        <div class="num">01</div>
+        <h3 class="heading-lg">Score the cohort</h3>
+        <p class="body" style="margin-top:8px;">Every woman on a GP's list is scored against a transparent linear model built on published clinical evidence.</p>
+      </div>
+      <div class="step">
+        <div class="num">02</div>
+        <h3 class="heading-lg">Clinician reviews</h3>
+        <p class="body" style="margin-top:8px;">A named GP sees the model's reasoning per patient and decides whether to initiate a preventative conversation.</p>
+      </div>
+      <div class="step">
+        <div class="num">03</div>
+        <h3 class="heading-lg">Patient acts</h3>
+        <p class="body" style="margin-top:8px;">Books an appointment, reads the education library, or self-refers — from a portal designed for trust, not engagement metrics.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ============================== GP DASHBOARD MOCK ============================== -->
+<section>
+  <div class="container-wide">
+    <p class="micro" style="color:var(--lavender-600);">The GP view</p>
+    <h2 class="display-lg" style="margin:12px 0 32px; max-width:20ch;">A worklist a clinician can act on.</h2>
+
+    <div class="dash-shell">
+      <div class="dash-header">
+        <div>
+          <span class="brand">Ostella</span>
+          <span class="practice">· Regent's Park Medical Centre</span>
+        </div>
+        <div class="role-switcher">
+          <span class="active">GP view</span>
+          <span class="inactive">Patient view</span>
+        </div>
+      </div>
+      <div class="dash-body">
+        <h3 class="heading-lg">Patient worklist</h3>
+        <p class="body" style="color:var(--ink-500);margin:8px 0 0;">82 women aged 42–55 registered to the practice, sorted by relative risk.</p>
+
+        <div class="summary-grid">
+          <div class="summary">
+            <div>
+              <div class="label">High risk</div>
+              <div class="count">12</div>
+            </div>
+            <span class="badge badge-high">High</span>
+          </div>
+          <div class="summary">
+            <div>
+              <div class="label">Moderate risk</div>
+              <div class="count">25</div>
+            </div>
+            <span class="badge badge-moderate">Moderate</span>
+          </div>
+          <div class="summary">
+            <div>
+              <div class="label">Low risk</div>
+              <div class="count">45</div>
+            </div>
+            <span class="badge badge-low">Low</span>
+          </div>
+        </div>
+
+        <table class="worklist">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Stage</th>
+              <th>Risk</th>
+              <th style="text-align:right;">Relative risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="name">Nia Shah</td>
+              <td>54</td>
+              <td>postmenopausal &lt; 5yr</td>
+              <td><span class="badge badge-high">High</span></td>
+              <td class="rr">3.63×</td>
+            </tr>
+            <tr>
+              <td class="name">Isla Nwosu</td>
+              <td>52</td>
+              <td>postmenopausal &lt; 5yr</td>
+              <td><span class="badge badge-high">High</span></td>
+              <td class="rr">3.43×</td>
+            </tr>
+            <tr>
+              <td class="name">Emma Liu</td>
+              <td>53</td>
+              <td>postmenopausal 5–10yr</td>
+              <td><span class="badge badge-high">High</span></td>
+              <td class="rr">3.12×</td>
+            </tr>
+            <tr style="background:var(--cream-50);">
+              <td class="name">Sarah Chen</td>
+              <td>49</td>
+              <td>late perimenopausal</td>
+              <td><span class="badge badge-high">High</span></td>
+              <td class="rr">2.58×</td>
+            </tr>
+            <tr>
+              <td class="name">Olivia Patel</td>
+              <td>51</td>
+              <td>late perimenopausal</td>
+              <td><span class="badge badge-moderate">Moderate</span></td>
+              <td class="rr">1.94×</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ============================== FEATURE CHART MOCK ============================== -->
+<section style="background:var(--cream-50);">
+  <div class="container-wide">
+    <p class="micro" style="color:var(--lavender-600);">Not a black box</p>
+    <h2 class="display-lg" style="margin:12px 0 12px; max-width:24ch;">A model a clinician can audit in ten minutes.</h2>
+    <p class="body-lg" style="margin:0 0 32px;max-width:60ch;color:var(--ink-500);">
+      Every weight traces to a primary-source paper. Every contribution is
+      visible per patient. No neural network, no LLM — a transparent
+      linear model, delivered by clinicians, verifiable by anyone.
+    </p>
+
+    <div class="dash-shell" style="padding:0;">
+      <div style="padding:32px 28px; border-bottom:1px solid var(--cream-200); display:flex; justify-content:space-between; align-items:flex-start;">
+        <div>
+          <p class="micro">← Back to worklist</p>
+          <h3 class="display-md" style="margin:12px 0 4px;">Sarah Chen</h3>
+          <p class="body" style="color:var(--ink-500);margin:0;">NHS 943 476 5919 · DOB 14 Nov 1976 · European ancestry</p>
+        </div>
+        <span class="badge badge-high" style="padding:8px 18px;font-size:14px;">High</span>
+      </div>
+
+      <div style="padding:32px 28px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px;">
+          <div>
+            <h4 class="heading-lg">Risk model contributions</h4>
+            <p class="body" style="color:var(--ink-500);margin:8px 0 0;">
+              Relative risk <span style="font-family:Fraunces,serif;font-weight:500;color:var(--ink-900);">2.58×</span>
+              vs reference woman.
+            </p>
+          </div>
+          <span class="badge badge-tag">Literature-verified weights · cohort calibration in progress</span>
+        </div>
+
+        <div class="chart">
+          <div class="chart-row">
+            <div class="chart-label">Parent hip fracture</div>
+            <div class="chart-bar-track"><div class="chart-bar pos" style="width:36%;"></div></div>
+            <div class="chart-value" style="color:var(--high);">+0.432</div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-label">Current smoker</div>
+            <div class="chart-bar-track"><div class="chart-bar pos" style="width:19%;"></div></div>
+            <div class="chart-value" style="color:var(--high);">+0.223</div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-label">BMI &lt; 20</div>
+            <div class="chart-bar-track"><div class="chart-bar pos" style="width:21%;"></div></div>
+            <div class="chart-value" style="color:var(--high);">+0.247</div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-label">Late perimenopausal</div>
+            <div class="chart-bar-track"><div class="chart-bar pos" style="width:3%;"></div></div>
+            <div class="chart-value" style="color:var(--high);">+0.039</div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-label">Low dietary calcium</div>
+            <div class="chart-bar-track"><div class="chart-bar pos" style="width:4%;"></div></div>
+            <div class="chart-value" style="color:var(--high);">+0.049</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ============================== DESIGN TOKENS ============================== -->
+<section>
+  <div class="container">
+    <p class="micro" style="color:var(--lavender-600);">Design system</p>
+    <h2 class="display-lg" style="margin:12px 0 0;">The tokens behind it.</h2>
+    <p class="body-lg" style="color:var(--ink-500);margin:16px 0 48px;max-width:55ch;">
+      Five color ramps, two type families, one spacing rhythm. Every Phase 1 component reads from these tokens — no ad-hoc colors anywhere.
+    </p>
+
+    <div>
+      <div class="palette-row">
+        <div class="ui-sm">Sage · primary brand</div>
+        <div class="palette-grid">
+          <div class="swatch" style="background:#f3f8f4;">50</div>
+          <div class="swatch" style="background:#e3eee6;">100</div>
+          <div class="swatch" style="background:#c7dccd;">200</div>
+          <div class="swatch" style="background:#9bc1a6;">300</div>
+          <div class="swatch" style="background:#6fa182;">400</div>
+          <div class="swatch dark" style="background:#4a8a5e;">500</div>
+          <div class="swatch dark" style="background:#3a6e4b;">600</div>
+          <div class="swatch dark" style="background:#2f5b3d;">700</div>
+          <div class="swatch dark" style="background:#28482f;">800</div>
+          <div class="swatch dark" style="background:#1c331f;">900</div>
+        </div>
+      </div>
+      <div class="palette-row">
+        <div class="ui-sm">Lavender · accent</div>
+        <div class="palette-grid">
+          <div class="swatch" style="background:#f6f4fb;">50</div>
+          <div class="swatch" style="background:#ece6f5;">100</div>
+          <div class="swatch" style="background:#d6c9e7;">200</div>
+          <div class="swatch" style="background:#b9a1d3;">300</div>
+          <div class="swatch dark" style="background:#a087c5;">400</div>
+          <div class="swatch dark" style="background:#8b6cc2;">500</div>
+          <div class="swatch dark" style="background:#7251af;">600</div>
+          <div class="swatch dark" style="background:#5b3f8e;">700</div>
+        </div>
+      </div>
+      <div class="palette-row">
+        <div class="ui-sm">Cream · neutral background</div>
+        <div class="palette-grid">
+          <div class="swatch" style="background:#fdfbf6;border:1px solid var(--cream-200);">50</div>
+          <div class="swatch" style="background:#f8f3e8;">100</div>
+          <div class="swatch" style="background:#efe5d0;">200</div>
+          <div class="swatch" style="background:#e2d4b2;">300</div>
+        </div>
+      </div>
+      <div class="palette-row">
+        <div class="ui-sm">Ink · text</div>
+        <div class="palette-grid">
+          <div class="swatch dark" style="background:#5e5b53;">500</div>
+          <div class="swatch dark" style="background:#3a3833;">700</div>
+          <div class="swatch dark" style="background:#1c1b18;">900</div>
+        </div>
+      </div>
+      <div class="palette-row">
+        <div class="ui-sm">Clinical · risk tier semantic</div>
+        <div class="palette-grid">
+          <div class="swatch dark" style="background:#c2554e;">high</div>
+          <div class="swatch dark" style="background:#c4923a;">moderate</div>
+          <div class="swatch dark" style="background:#4a8a5e;">low</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:64px;display:grid;grid-template-columns:1fr 1fr;gap:48px;">
+      <div>
+        <div class="ui-sm" style="margin-bottom:16px;">Buttons</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a class="btn btn-primary" href="#">Send alert <span class="arrow">→</span></a>
+          <a class="btn btn-outline" href="#">Cancel</a>
+        </div>
+      </div>
+      <div>
+        <div class="ui-sm" style="margin-bottom:16px;">Risk badges</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <span class="badge badge-high">High</span>
+          <span class="badge badge-moderate">Moderate</span>
+          <span class="badge badge-low">Low</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== FOOTER ============================== -->
+<section style="background:var(--ink-900);color:var(--cream-100);padding:80px 0 64px;">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;align-items:start;">
+      <div>
+        <div style="font-family:Fraunces,serif;font-weight:500;font-size:36px;color:var(--cream-50);">Ostella</div>
+        <p style="margin:16px 0 0;color:var(--cream-200);max-width:40ch;font-size:14px;line-height:1.6;">
+          Preventative women's health, inside the NHS primary-care workflow. Built for the window that closes too quickly.
+        </p>
+      </div>
+      <div>
+        <p class="micro" style="color:var(--cream-300);">Product</p>
+        <ul style="list-style:none;padding:0;margin:16px 0 0;display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--cream-200);">
+          <li>GP worklist</li>
+          <li>Patient portal</li>
+          <li>Transparent model</li>
+        </ul>
+      </div>
+      <div>
+        <p class="micro" style="color:var(--cream-300);">Evidence</p>
+        <ul style="list-style:none;padding:0;margin:16px 0 0;display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--cream-200);">
+          <li>Methodology</li>
+          <li>Model weights</li>
+          <li>Calibration notes</li>
+        </ul>
+      </div>
+      <div>
+        <p class="micro" style="color:var(--cream-300);">About</p>
+        <ul style="list-style:none;padding:0;margin:16px 0 0;display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--cream-200);">
+          <li>Research prototype</li>
+          <li>LSE 2026</li>
+          <li>Contact</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:56px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;color:var(--cream-300);font-size:12px;">
+      <span>Ostella · An early-stage research prototype. Not for clinical use.</span>
+      <span>v0.1.0 · 2026</span>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

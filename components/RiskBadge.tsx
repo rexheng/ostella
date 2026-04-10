@@ -3,9 +3,9 @@ import type { RiskTier } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const STYLES: Record<RiskTier, string> = {
-  low: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  moderate: "bg-amber-50 text-amber-800 border-amber-200",
-  high: "bg-rose-50 text-rose-700 border-rose-200",
+  low: "bg-clinical-low-bg text-sage-700 border-clinical-low-border",
+  moderate: "bg-clinical-moderate-bg text-clinical-moderate border-clinical-moderate-border",
+  high: "bg-clinical-high-bg text-clinical-high border-clinical-high-border",
 };
 
 const LABELS: Record<RiskTier, string> = {
@@ -14,11 +14,17 @@ const LABELS: Record<RiskTier, string> = {
   high: "High",
 };
 
-export function RiskBadge({ tier, className }: { tier: RiskTier; className?: string }) {
+export function RiskBadge({
+  tier,
+  className,
+}: {
+  tier: RiskTier;
+  className?: string;
+}) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium",
+        "inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium tracking-wide",
         STYLES[tier],
         className
       )}
