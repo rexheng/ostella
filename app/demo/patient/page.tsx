@@ -1,11 +1,11 @@
 // app/demo/patient/page.tsx
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Calendar, Heart, BookOpen, ArrowRight } from "lucide-react";
 import { getPatient, getAllPatients } from "@/lib/patients";
 import { scorePatient } from "@/lib/risk-model";
 import { getDemoState, setDemoState } from "@/lib/demo-state";
 import { RiskBadge } from "@/components/RiskBadge";
-import { Card } from "@/components/ui/card";
 import type { RiskTier } from "@/lib/types";
 
 // Server Action: persist the ?as= selection and strip the query param.
@@ -21,11 +21,13 @@ async function applyAs(formData: FormData) {
   redirect("/demo/patient");
 }
 
+// Plain-language, vague/non-bone framing per copy guidance.
+// One short paragraph per tier, tuned to the "your midlife health" register.
 const RISK_EXPLANATIONS: Record<RiskTier, string> = {
-  low: "Your current bone-health risk is assessed as low. The focus now is on the preventative habits — strength training, calcium-rich food, daylight — that keep it that way.",
+  low: "Things look steady for now. The most useful thing you can do from here is keep the preventative habits in your life — movement, nourishing food, daylight, rest — quietly doing their work.",
   moderate:
-    "You have a moderate risk profile. A few changes over the next year can meaningfully reduce your risk over the next decade.",
-  high: "Your bone-health risk is assessed as high. Your GP has asked to talk with you soon — you'll see their message above if one has been sent.",
+    "A few things in your record put you in a middle group. Nothing urgent, but the next year or two is a window where small, deliberate changes tend to pay off over the decade that follows.",
+  high: "Based on your history, we've asked your GP to have a preventative conversation with you. A few factors in your record put you in a slightly elevated group — nothing alarming, but worth acting on now rather than later.",
 };
 
 export default function PatientPortalHome({
@@ -41,14 +43,14 @@ export default function PatientPortalHome({
   // fallback: the same form renders a visible "Continue" button.
   if (searchParams.as && getPatient(searchParams.as)) {
     return (
-      <div className="mx-auto max-w-md py-20 text-center">
+      <div className="mx-auto max-w-md py-24 text-center">
         <form id="ostella-apply-as" action={applyAs}>
           <input type="hidden" name="as" value={searchParams.as} />
-          <p className="text-sm text-slate-500">Loading patient portal…</p>
+          <p className="text-sm text-ink-500">Loading patient portal…</p>
           <noscript>
             <button
               type="submit"
-              className="mt-4 rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white"
+              className="mt-6 rounded-full bg-sage-600 px-6 py-3 text-sm font-medium text-cream-50 transition hover:bg-sage-700"
             >
               Continue
             </button>
@@ -73,88 +75,134 @@ export default function PatientPortalHome({
     getPatient("p-001") ??
     getAllPatients()[0];
   const scored = scorePatient(patient);
+  const firstName = patient.name.split(" ")[0];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <p className="text-sm text-slate-500">Hello,</p>
-        <h1 className="text-2xl font-semibold tracking-tight">{patient.name}</h1>
+    <div className="mx-auto max-w-5xl space-y-12">
+      {/* Greeting */}
+      <div className="pt-4">
+        <p className="font-display text-3xl font-light text-ink-500">
+          Hello,
+        </p>
+        <h1 className="font-display text-6xl font-light leading-[1.05] tracking-tight text-ink-900">
+          {firstName}.
+        </h1>
       </div>
 
+      {/* Pre-baked alert from GP */}
       {patient.latest_alert && (
-        <Card className="border-rose-200 bg-rose-50 p-6">
-          <p className="text-xs font-medium uppercase tracking-wide text-rose-700">
-            Message from your GP ·{" "}
-            {new Date(patient.latest_alert.sent_at).toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
+        <section className="rounded-2xl border border-cream-200 border-t-4 border-t-lavender-400 bg-cream-100 p-8">
+          <p className="text-xs font-medium uppercase tracking-[0.15em] text-lavender-700">
+            A message from your GP ·{" "}
+            {new Date(patient.latest_alert.sent_at).toLocaleDateString(
+              "en-GB",
+              {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              },
+            )}
           </p>
-          <p className="mt-1 text-sm font-medium text-rose-900">
+          <p className="mt-3 font-display text-2xl font-medium text-ink-900">
             {patient.latest_alert.sent_by}
           </p>
-          <pre className="mt-4 whitespace-pre-wrap font-sans text-sm leading-relaxed text-slate-800">
+          <pre className="mt-5 whitespace-pre-wrap font-sans text-[15px] leading-relaxed text-ink-700">
             {patient.latest_alert.message}
           </pre>
-        </Card>
+        </section>
       )}
 
-      <Card className="p-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Your bone-health risk</h2>
-          <RiskBadge tier={scored.tier} className="px-3 py-1 text-sm" />
+      {/* Risk summary */}
+      <section className="rounded-2xl border border-cream-200 bg-cream-100 p-8">
+        <div className="flex items-start justify-between gap-6">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.15em] text-lavender-600">
+              Where you stand
+            </p>
+            <h2 className="mt-2 font-display text-3xl font-light text-ink-900">
+              Your health profile
+            </h2>
+          </div>
+          <RiskBadge tier={scored.tier} className="shrink-0 px-4 py-1.5" />
         </div>
-        <p className="mt-2 text-sm text-slate-700">
+        <p className="mt-5 max-w-[60ch] text-[15px] leading-relaxed text-ink-700">
           {RISK_EXPLANATIONS[scored.tier]}
         </p>
-      </Card>
+      </section>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <ActionCard
-          title="Book an appointment"
-          body="Speak to your GP about next steps, including the option of a bone density scan."
-          cta="Request appointment"
-          href="/demo/patient/refer"
-        />
-        <ActionCard
-          title="Lifestyle changes"
-          body="Small, high-leverage changes to diet, exercise, and daily habits that protect bone density."
-          cta="Read the guide"
-          href="/demo/patient/education"
-        />
-        <ActionCard
-          title="Learn more"
-          body="A short library of evidence-based articles on perimenopause and bone health."
-          cta="Open library"
-          href="/demo/patient/education"
-        />
-      </div>
+      {/* Action cards */}
+      <section>
+        <p className="text-xs font-medium uppercase tracking-[0.15em] text-lavender-600">
+          What you can do
+        </p>
+        <h2 className="mt-2 font-display text-3xl font-light text-ink-900">
+          A few gentle next steps
+        </h2>
+        <div className="mt-8 grid gap-6 md:grid-cols-3">
+          <ActionCard
+            icon={<Calendar className="h-5 w-5" strokeWidth={1.5} />}
+            eyebrow="Talk to a clinician"
+            title="Book a conversation"
+            body="Request a short, preventative appointment with your GP — a conversation, not a crisis visit."
+            href="/demo/patient/refer"
+          />
+          <ActionCard
+            icon={<Heart className="h-5 w-5" strokeWidth={1.5} />}
+            eyebrow="Lifestyle"
+            title="Small changes, big effect"
+            body="The handful of daily habits that quietly add up over the years — movement, food, light, rest."
+            href="/demo/patient/education"
+          />
+          <ActionCard
+            icon={<BookOpen className="h-5 w-5" strokeWidth={1.5} />}
+            eyebrow="Learn"
+            title="Understand your profile"
+            body="Short, plain-language reads on perimenopause and what your preventative window actually means."
+            href="/demo/patient/education"
+          />
+        </div>
+      </section>
     </div>
   );
 }
 
 function ActionCard({
+  icon,
+  eyebrow,
   title,
   body,
-  cta,
   href,
 }: {
+  icon: React.ReactNode;
+  eyebrow: string;
   title: string;
   body: string;
-  cta: string;
   href: string;
 }) {
   return (
-    <Card className="flex flex-col p-5">
-      <h3 className="font-semibold">{title}</h3>
-      <p className="mt-2 flex-1 text-sm text-slate-600">{body}</p>
-      <Link
-        href={href}
-        className="mt-4 text-sm font-medium text-slate-900 hover:underline"
-      >
-        {cta} →
-      </Link>
-    </Card>
+    <Link
+      href={href}
+      className="group flex h-full flex-col rounded-2xl border border-cream-200 bg-cream-100 p-8 transition hover:-translate-y-0.5 hover:border-sage-200 hover:shadow-sm"
+    >
+      <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sage-50 text-sage-700">
+        {icon}
+      </span>
+      <p className="mt-6 text-xs font-medium uppercase tracking-[0.15em] text-lavender-600">
+        {eyebrow}
+      </p>
+      <h3 className="mt-2 font-display text-2xl font-medium leading-snug text-ink-900">
+        {title}
+      </h3>
+      <p className="mt-3 flex-1 text-[15px] leading-relaxed text-ink-500">
+        {body}
+      </p>
+      <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-sage-700">
+        Open
+        <ArrowRight
+          className="h-4 w-4 transition-transform group-hover:translate-x-1"
+          strokeWidth={1.75}
+        />
+      </span>
+    </Link>
   );
 }
