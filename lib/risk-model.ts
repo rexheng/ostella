@@ -19,6 +19,7 @@ import {
   TIER_THRESHOLDS,
   STAGE_HRT_INTERACTION_RULE,
   EARLY_MENOPAUSE_INTERACTION_RULE,
+  type CoefficientEntry,
 } from "@/lib/model-weights";
 
 const REFERENCE_AGE = 50;
@@ -35,8 +36,7 @@ function ageFromDob(dob: string, today: Date = new Date()): number {
 
 /** Build a RiskContribution from a CoefficientEntry, copying all enrichment fields. */
 function contributionFrom(
-  // Using the structural shape so this file doesn't import CoefficientEntry directly.
-  entry: (typeof WEIGHTS.bmi_low)["coefficient"],
+  entry: CoefficientEntry,
   patientValue: string | number | boolean,
   contribution: number
 ): RiskContribution {
