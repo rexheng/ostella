@@ -1,1 +1,2313 @@
-[]
+[
+  {
+    "id": "p-001",
+    "name": "Sarah Chen",
+    "date_of_birth": "1976-11-14",
+    "nhs_number": "943 476 5919",
+    "ethnicity": "white",
+    "gp_registered_date": "2018-06-04",
+    "contact": {
+      "email": "sarah.chen@example.com",
+      "phone": "+44 7700 900123"
+    },
+    "clinical": {
+      "height_cm": 163,
+      "weight_kg": 51.2,
+      "bmi": 19.3,
+      "menopausal_stage": "late_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": true,
+      "current_smoker": true,
+      "alcohol_units_per_day": 1,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 620
+    },
+    "latest_alert": {
+      "sent_at": "2026-04-08T11:15:00Z",
+      "sent_by": "Dr. Amira Hassan",
+      "risk_level_at_send": "high",
+      "message": "Dear Sarah,\n\nI'm Dr. Amira Hassan, one of the GPs at Regent's Park Medical Centre.\nI'm writing because we recently reviewed your records as part of a\nnew preventative screening programme for women in perimenopause.\n\nBased on several factors in your history, you've been identified\nas someone who would benefit from a conversation about bone health\nin the next few weeks. This is preventative, not urgent — but the\nchanges that happen to bones in the years around menopause are\neasier to address early than later.\n\nI'd like to invite you to:\n\n  1. Book a 15-minute appointment with me to discuss next steps\n  2. Read a short guide we've prepared on what's happening and\n     what you can do about it — your patient portal has this\n  3. Consider requesting a DEXA bone density scan, which I can\n     arrange if it's appropriate after we've spoken\n\nThis isn't a diagnosis. It's an invitation to a conversation.\nIf you'd rather not take this up, no action is needed — just let\nus know and we'll remove you from the programme.\n\nWarm regards,\nDr. Amira Hassan\nRegent's Park Medical Centre"
+    }
+  },
+  {
+    "id": "p-002",
+    "name": "Chiamaka Ali",
+    "date_of_birth": "1973-08-25",
+    "nhs_number": "525 324 8938",
+    "ethnicity": "white",
+    "gp_registered_date": "2022-04-06",
+    "contact": {
+      "email": "chiamaka.ali@example.com",
+      "phone": "+44 7700 950072"
+    },
+    "clinical": {
+      "height_cm": 167.9,
+      "weight_kg": 63.2,
+      "bmi": 22.4,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 45,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": true,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": true,
+      "dietary_calcium_mg_per_day": 613
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-003",
+    "name": "Olivia Taylor",
+    "date_of_birth": "1974-06-23",
+    "nhs_number": "387 504 1336",
+    "ethnicity": "white",
+    "gp_registered_date": "2016-07-17",
+    "contact": {
+      "email": "olivia.taylor@example.com",
+      "phone": "+44 7700 924517"
+    },
+    "clinical": {
+      "height_cm": 162.6,
+      "weight_kg": 80.3,
+      "bmi": 30.4,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 44,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 634
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-004",
+    "name": "Sophie Wang",
+    "date_of_birth": "1975-06-27",
+    "nhs_number": "223 199 1142",
+    "ethnicity": "other",
+    "gp_registered_date": "2019-06-18",
+    "contact": {
+      "email": "sophie.wang@example.com",
+      "phone": "+44 7700 989955"
+    },
+    "clinical": {
+      "height_cm": 161.3,
+      "weight_kg": 83.3,
+      "bmi": 32,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 46,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 496
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-005",
+    "name": "Deborah Shah",
+    "date_of_birth": "1972-08-10",
+    "nhs_number": "756 365 5047",
+    "ethnicity": "white",
+    "gp_registered_date": "2023-09-28",
+    "contact": {
+      "email": "deborah.shah@example.com",
+      "phone": "+44 7700 989019"
+    },
+    "clinical": {
+      "height_cm": 168.7,
+      "weight_kg": 65.1,
+      "bmi": 22.9,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 47,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 475
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-006",
+    "name": "Zainab Park",
+    "date_of_birth": "1983-03-12",
+    "nhs_number": "247 689 4023",
+    "ethnicity": "white",
+    "gp_registered_date": "2017-08-25",
+    "contact": {
+      "email": "zainab.park@example.com",
+      "phone": "+44 7700 932637"
+    },
+    "clinical": {
+      "height_cm": 170.6,
+      "weight_kg": 76,
+      "bmi": 26.1,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": true,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 908
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-007",
+    "name": "Nicola Adeyemi",
+    "date_of_birth": "1982-09-20",
+    "nhs_number": "362 347 4029",
+    "ethnicity": "white",
+    "gp_registered_date": "2016-03-28",
+    "contact": {
+      "email": "nicola.adeyemi@example.com",
+      "phone": "+44 7700 957235"
+    },
+    "clinical": {
+      "height_cm": 162.8,
+      "weight_kg": 56.4,
+      "bmi": 21.3,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 735
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-008",
+    "name": "Nia Khan",
+    "date_of_birth": "1980-07-17",
+    "nhs_number": "311 392 3689",
+    "ethnicity": "white",
+    "gp_registered_date": "2018-09-07",
+    "contact": {
+      "email": "nia.khan@example.com",
+      "phone": "+44 7700 916930"
+    },
+    "clinical": {
+      "height_cm": 167.4,
+      "weight_kg": 73.3,
+      "bmi": 26.2,
+      "menopausal_stage": "late_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 785
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-009",
+    "name": "Mei Liu",
+    "date_of_birth": "1972-11-15",
+    "nhs_number": "856 905 5050",
+    "ethnicity": "black_african",
+    "gp_registered_date": "2017-08-23",
+    "contact": {
+      "email": "mei.liu@example.com",
+      "phone": "+44 7700 920840"
+    },
+    "clinical": {
+      "height_cm": 166.6,
+      "weight_kg": 59.6,
+      "bmi": 21.5,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 48,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": true,
+      "dietary_calcium_mg_per_day": 455
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-010",
+    "name": "Isla Ahmed",
+    "date_of_birth": "1975-11-24",
+    "nhs_number": "639 415 5022",
+    "ethnicity": "other",
+    "gp_registered_date": "2023-09-10",
+    "contact": {
+      "email": "isla.ahmed@example.com",
+      "phone": "+44 7700 993753"
+    },
+    "clinical": {
+      "height_cm": 172.2,
+      "weight_kg": 73.9,
+      "bmi": 24.9,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 43,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": true,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 981
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-011",
+    "name": "Karen Okafor",
+    "date_of_birth": "1978-01-09",
+    "nhs_number": "496 611 7447",
+    "ethnicity": "white",
+    "gp_registered_date": "2023-10-06",
+    "contact": {
+      "email": "karen.okafor@example.com",
+      "phone": "+44 7700 966635"
+    },
+    "clinical": {
+      "height_cm": 164.1,
+      "weight_kg": 59.2,
+      "bmi": 22,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 45,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": true,
+      "dietary_calcium_mg_per_day": 804
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-012",
+    "name": "Mia Hussain",
+    "date_of_birth": "1977-02-27",
+    "nhs_number": "162 883 4873",
+    "ethnicity": "white",
+    "gp_registered_date": "2020-02-24",
+    "contact": {
+      "email": "mia.hussain@example.com",
+      "phone": "+44 7700 905673"
+    },
+    "clinical": {
+      "height_cm": 162,
+      "weight_kg": 55.1,
+      "bmi": 21,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 47,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 4,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 839
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-013",
+    "name": "Joanne Hussain",
+    "date_of_birth": "1982-09-19",
+    "nhs_number": "604 978 1199",
+    "ethnicity": "white",
+    "gp_registered_date": "2019-05-08",
+    "contact": {
+      "email": "joanne.hussain@example.com",
+      "phone": "+44 7700 983310"
+    },
+    "clinical": {
+      "height_cm": 160.9,
+      "weight_kg": 62.9,
+      "bmi": 24.3,
+      "menopausal_stage": "premenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1149
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-014",
+    "name": "Nia Shah",
+    "date_of_birth": "1973-09-16",
+    "nhs_number": "591 970 9858",
+    "ethnicity": "white",
+    "gp_registered_date": "2022-04-18",
+    "contact": {
+      "email": "nia.shah@example.com",
+      "phone": "+44 7700 966791"
+    },
+    "clinical": {
+      "height_cm": 168,
+      "weight_kg": 53,
+      "bmi": 18.8,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 44,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": true,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 550
+    },
+    "latest_alert": {
+      "sent_at": "2026-04-08T09:22:00Z",
+      "sent_by": "Dr. Amira Hassan",
+      "risk_level_at_send": "high",
+      "message": "I wanted to follow up on the note about bone health…"
+    }
+  },
+  {
+    "id": "p-015",
+    "name": "Chiamaka Okafor",
+    "date_of_birth": "1975-04-18",
+    "nhs_number": "794 764 7433",
+    "ethnicity": "white",
+    "gp_registered_date": "2017-11-26",
+    "contact": {
+      "email": "chiamaka.okafor@example.com",
+      "phone": "+44 7700 954473"
+    },
+    "clinical": {
+      "height_cm": 174.4,
+      "weight_kg": 69.6,
+      "bmi": 22.9,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 49,
+      "prior_fragility_fracture": true,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 974
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-016",
+    "name": "Anjali Jones",
+    "date_of_birth": "1982-11-20",
+    "nhs_number": "176 129 3432",
+    "ethnicity": "white",
+    "gp_registered_date": "2022-04-24",
+    "contact": {
+      "email": "anjali.jones@example.com",
+      "phone": "+44 7700 962609"
+    },
+    "clinical": {
+      "height_cm": 165.6,
+      "weight_kg": 79.8,
+      "bmi": 29.1,
+      "menopausal_stage": "premenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 3,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 608
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-017",
+    "name": "Helen Ahmed",
+    "date_of_birth": "1978-12-04",
+    "nhs_number": "152 129 4064",
+    "ethnicity": "white",
+    "gp_registered_date": "2018-03-28",
+    "contact": {
+      "email": "helen.ahmed@example.com",
+      "phone": "+44 7700 958119"
+    },
+    "clinical": {
+      "height_cm": 171.7,
+      "weight_kg": 75.7,
+      "bmi": 25.7,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 44,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1029
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-018",
+    "name": "Anjali Brown",
+    "date_of_birth": "1983-06-27",
+    "nhs_number": "257 230 5969",
+    "ethnicity": "white",
+    "gp_registered_date": "2022-03-22",
+    "contact": {
+      "email": "anjali.brown@example.com",
+      "phone": "+44 7700 924129"
+    },
+    "clinical": {
+      "height_cm": 173.1,
+      "weight_kg": 78.8,
+      "bmi": 26.3,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 996
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-019",
+    "name": "Olivia Mensah",
+    "date_of_birth": "1976-10-08",
+    "nhs_number": "876 510 2643",
+    "ethnicity": "white",
+    "gp_registered_date": "2021-07-06",
+    "contact": {
+      "email": "olivia.mensah@example.com",
+      "phone": "+44 7700 985249"
+    },
+    "clinical": {
+      "height_cm": 164.9,
+      "weight_kg": 76.4,
+      "bmi": 28.1,
+      "menopausal_stage": "late_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 2,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 940
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-020",
+    "name": "Isla Nwosu",
+    "date_of_birth": "1973-06-14",
+    "nhs_number": "326 549 1313",
+    "ethnicity": "white",
+    "gp_registered_date": "2023-05-12",
+    "contact": {
+      "email": "isla.nwosu@example.com",
+      "phone": "+44 7700 925154"
+    },
+    "clinical": {
+      "height_cm": 167.8,
+      "weight_kg": 77.9,
+      "bmi": 27.7,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 50,
+      "prior_fragility_fracture": true,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 443
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-021",
+    "name": "Amara Hussain",
+    "date_of_birth": "1978-01-20",
+    "nhs_number": "103 721 2649",
+    "ethnicity": "white",
+    "gp_registered_date": "2019-09-27",
+    "contact": {
+      "email": "amara.hussain@example.com",
+      "phone": "+44 7700 927901"
+    },
+    "clinical": {
+      "height_cm": 166.8,
+      "weight_kg": 72.3,
+      "bmi": 26,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 45,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1003
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-022",
+    "name": "Charlotte Liu",
+    "date_of_birth": "1976-11-02",
+    "nhs_number": "564 538 7137",
+    "ethnicity": "black_african",
+    "gp_registered_date": "2020-08-24",
+    "contact": {
+      "email": "charlotte.liu@example.com",
+      "phone": "+44 7700 966428"
+    },
+    "clinical": {
+      "height_cm": 167.2,
+      "weight_kg": 55.2,
+      "bmi": 19.7,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 46,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": true,
+      "dietary_calcium_mg_per_day": 1195
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-023",
+    "name": "Olivia Ahmed",
+    "date_of_birth": "1972-11-13",
+    "nhs_number": "930 690 3254",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2017-05-21",
+    "contact": {
+      "email": "olivia.ahmed@example.com",
+      "phone": "+44 7700 905039"
+    },
+    "clinical": {
+      "height_cm": 171.6,
+      "weight_kg": 64.8,
+      "bmi": 22,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 49,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 992
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-024",
+    "name": "Emma Liu",
+    "date_of_birth": "1972-06-11",
+    "nhs_number": "857 668 3835",
+    "ethnicity": "white",
+    "gp_registered_date": "2020-07-28",
+    "contact": {
+      "email": "emma.liu@example.com",
+      "phone": "+44 7700 917268"
+    },
+    "clinical": {
+      "height_cm": 168.9,
+      "weight_kg": 82,
+      "bmi": 28.7,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 47,
+      "prior_fragility_fracture": true,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 871
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-025",
+    "name": "Isla Nwosu",
+    "date_of_birth": "1982-08-26",
+    "nhs_number": "794 100 1543",
+    "ethnicity": "east_asian",
+    "gp_registered_date": "2016-11-01",
+    "contact": {
+      "email": "isla.nwosu@example.com",
+      "phone": "+44 7700 903466"
+    },
+    "clinical": {
+      "height_cm": 168.5,
+      "weight_kg": 71.4,
+      "bmi": 25.1,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": true,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": true,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 676
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-026",
+    "name": "Grace Singh",
+    "date_of_birth": "1975-07-12",
+    "nhs_number": "629 470 6313",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2017-02-20",
+    "contact": {
+      "email": "grace.singh@example.com",
+      "phone": "+44 7700 973262"
+    },
+    "clinical": {
+      "height_cm": 168.8,
+      "weight_kg": 80.5,
+      "bmi": 28.3,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 49,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1113
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-027",
+    "name": "Zara Evans",
+    "date_of_birth": "1972-02-09",
+    "nhs_number": "984 555 9783",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2016-08-17",
+    "contact": {
+      "email": "zara.evans@example.com",
+      "phone": "+44 7700 998872"
+    },
+    "clinical": {
+      "height_cm": 173.8,
+      "weight_kg": 62,
+      "bmi": 20.5,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 48,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 630
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-028",
+    "name": "Karen Chen",
+    "date_of_birth": "1980-07-26",
+    "nhs_number": "693 586 8996",
+    "ethnicity": "white",
+    "gp_registered_date": "2021-11-13",
+    "contact": {
+      "email": "karen.chen@example.com",
+      "phone": "+44 7700 963090"
+    },
+    "clinical": {
+      "height_cm": 166.7,
+      "weight_kg": 60.3,
+      "bmi": 21.7,
+      "menopausal_stage": "late_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": true,
+      "dietary_calcium_mg_per_day": 968
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-029",
+    "name": "Mei Evans",
+    "date_of_birth": "1984-06-20",
+    "nhs_number": "222 737 2936",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2018-08-10",
+    "contact": {
+      "email": "mei.evans@example.com",
+      "phone": "+44 7700 934997"
+    },
+    "clinical": {
+      "height_cm": 164.2,
+      "weight_kg": 56.3,
+      "bmi": 20.9,
+      "menopausal_stage": "premenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 1,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1163
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-030",
+    "name": "Yuki Taylor",
+    "date_of_birth": "1975-05-05",
+    "nhs_number": "911 615 2564",
+    "ethnicity": "east_asian",
+    "gp_registered_date": "2016-11-03",
+    "contact": {
+      "email": "yuki.taylor@example.com",
+      "phone": "+44 7700 953450"
+    },
+    "clinical": {
+      "height_cm": 174.1,
+      "weight_kg": 67.2,
+      "bmi": 22.2,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 44,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 470
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-031",
+    "name": "Ava Mensah",
+    "date_of_birth": "1979-05-10",
+    "nhs_number": "680 884 8931",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2018-08-14",
+    "contact": {
+      "email": "ava.mensah@example.com",
+      "phone": "+44 7700 951670"
+    },
+    "clinical": {
+      "height_cm": 166.6,
+      "weight_kg": 64.7,
+      "bmi": 23.3,
+      "menopausal_stage": "late_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": true,
+      "dietary_calcium_mg_per_day": 523
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-032",
+    "name": "Olivia Brown",
+    "date_of_birth": "1980-12-21",
+    "nhs_number": "494 413 7744",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2018-08-08",
+    "contact": {
+      "email": "olivia.brown@example.com",
+      "phone": "+44 7700 911278"
+    },
+    "clinical": {
+      "height_cm": 166.8,
+      "weight_kg": 66.4,
+      "bmi": 23.9,
+      "menopausal_stage": "late_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 452
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-033",
+    "name": "Chiamaka Okafor",
+    "date_of_birth": "1982-06-01",
+    "nhs_number": "455 147 4445",
+    "ethnicity": "white",
+    "gp_registered_date": "2020-05-01",
+    "contact": {
+      "email": "chiamaka.okafor@example.com",
+      "phone": "+44 7700 996231"
+    },
+    "clinical": {
+      "height_cm": 174.6,
+      "weight_kg": 68.5,
+      "bmi": 22.5,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 3,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1110
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-034",
+    "name": "Ava Liu",
+    "date_of_birth": "1977-11-27",
+    "nhs_number": "303 221 1096",
+    "ethnicity": "white",
+    "gp_registered_date": "2024-09-18",
+    "contact": {
+      "email": "ava.liu@example.com",
+      "phone": "+44 7700 909079"
+    },
+    "clinical": {
+      "height_cm": 160,
+      "weight_kg": 80.2,
+      "bmi": 31.3,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 46,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 462
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-035",
+    "name": "Mia Adeyemi",
+    "date_of_birth": "1971-10-02",
+    "nhs_number": "933 403 9571",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2024-10-05",
+    "contact": {
+      "email": "mia.adeyemi@example.com",
+      "phone": "+44 7700 936030"
+    },
+    "clinical": {
+      "height_cm": 163.1,
+      "weight_kg": 56,
+      "bmi": 21.1,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 49,
+      "prior_fragility_fracture": true,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": true,
+      "dietary_calcium_mg_per_day": 1106
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-036",
+    "name": "Nia Chen",
+    "date_of_birth": "1979-12-06",
+    "nhs_number": "307 645 6479",
+    "ethnicity": "white",
+    "gp_registered_date": "2021-06-12",
+    "contact": {
+      "email": "nia.chen@example.com",
+      "phone": "+44 7700 935208"
+    },
+    "clinical": {
+      "height_cm": 166.4,
+      "weight_kg": 58.1,
+      "bmi": 21,
+      "menopausal_stage": "late_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1084
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-037",
+    "name": "Zainab Kim",
+    "date_of_birth": "1982-12-26",
+    "nhs_number": "489 931 9151",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2016-06-25",
+    "contact": {
+      "email": "zainab.kim@example.com",
+      "phone": "+44 7700 927089"
+    },
+    "clinical": {
+      "height_cm": 166,
+      "weight_kg": 60.8,
+      "bmi": 19.5,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 47,
+      "prior_fragility_fracture": true,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 480
+    },
+    "latest_alert": {
+      "sent_at": "2026-04-07T14:10:00Z",
+      "sent_by": "Dr. Amira Hassan",
+      "risk_level_at_send": "high",
+      "message": "Following up on your bone health review…"
+    }
+  },
+  {
+    "id": "p-038",
+    "name": "Helen Ali",
+    "date_of_birth": "1980-01-20",
+    "nhs_number": "239 331 1344",
+    "ethnicity": "white",
+    "gp_registered_date": "2023-02-21",
+    "contact": {
+      "email": "helen.ali@example.com",
+      "phone": "+44 7700 954953"
+    },
+    "clinical": {
+      "height_cm": 164,
+      "weight_kg": 61.2,
+      "bmi": 22.8,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 992
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-039",
+    "name": "Nia Ahmed",
+    "date_of_birth": "1979-05-09",
+    "nhs_number": "711 418 2707",
+    "ethnicity": "other",
+    "gp_registered_date": "2021-10-16",
+    "contact": {
+      "email": "nia.ahmed@example.com",
+      "phone": "+44 7700 998848"
+    },
+    "clinical": {
+      "height_cm": 164.5,
+      "weight_kg": 67.3,
+      "bmi": 24.9,
+      "menopausal_stage": "late_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 448
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-040",
+    "name": "Chiamaka Smith",
+    "date_of_birth": "1983-05-28",
+    "nhs_number": "533 745 8723",
+    "ethnicity": "white",
+    "gp_registered_date": "2023-04-24",
+    "contact": {
+      "email": "chiamaka.smith@example.com",
+      "phone": "+44 7700 936502"
+    },
+    "clinical": {
+      "height_cm": 163.6,
+      "weight_kg": 60.2,
+      "bmi": 22.5,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": true,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 893
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-041",
+    "name": "Folake Wilson",
+    "date_of_birth": "1972-07-26",
+    "nhs_number": "466 962 8372",
+    "ethnicity": "east_asian",
+    "gp_registered_date": "2016-11-21",
+    "contact": {
+      "email": "folake.wilson@example.com",
+      "phone": "+44 7700 983510"
+    },
+    "clinical": {
+      "height_cm": 169.4,
+      "weight_kg": 73.8,
+      "bmi": 25.7,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 48,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 828
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-042",
+    "name": "Olivia Thomas",
+    "date_of_birth": "1971-03-03",
+    "nhs_number": "889 357 3589",
+    "ethnicity": "other",
+    "gp_registered_date": "2024-08-07",
+    "contact": {
+      "email": "olivia.thomas@example.com",
+      "phone": "+44 7700 930455"
+    },
+    "clinical": {
+      "height_cm": 168.5,
+      "weight_kg": 70.9,
+      "bmi": 25,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 49,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 862
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-043",
+    "name": "Yuki Shah",
+    "date_of_birth": "1980-03-20",
+    "nhs_number": "829 656 2228",
+    "ethnicity": "white",
+    "gp_registered_date": "2018-03-25",
+    "contact": {
+      "email": "yuki.shah@example.com",
+      "phone": "+44 7700 909970"
+    },
+    "clinical": {
+      "height_cm": 167.3,
+      "weight_kg": 74.8,
+      "bmi": 26.7,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 2,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 588
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-044",
+    "name": "Chiamaka Shah",
+    "date_of_birth": "1977-10-23",
+    "nhs_number": "571 172 3449",
+    "ethnicity": "other",
+    "gp_registered_date": "2018-10-13",
+    "contact": {
+      "email": "chiamaka.shah@example.com",
+      "phone": "+44 7700 913120"
+    },
+    "clinical": {
+      "height_cm": 162.6,
+      "weight_kg": 55.1,
+      "bmi": 20.8,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 47,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 963
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-045",
+    "name": "Rachel Khan",
+    "date_of_birth": "1982-12-28",
+    "nhs_number": "750 979 3183",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2023-01-09",
+    "contact": {
+      "email": "rachel.khan@example.com",
+      "phone": "+44 7700 951612"
+    },
+    "clinical": {
+      "height_cm": 169.3,
+      "weight_kg": 63.3,
+      "bmi": 22.1,
+      "menopausal_stage": "premenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1088
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-046",
+    "name": "Chiamaka Adeyemi",
+    "date_of_birth": "1979-09-06",
+    "nhs_number": "708 299 8010",
+    "ethnicity": "white",
+    "gp_registered_date": "2018-01-05",
+    "contact": {
+      "email": "chiamaka.adeyemi@example.com",
+      "phone": "+44 7700 918967"
+    },
+    "clinical": {
+      "height_cm": 165.5,
+      "weight_kg": 61,
+      "bmi": 22.3,
+      "menopausal_stage": "late_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 665
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-047",
+    "name": "Isla Shah",
+    "date_of_birth": "1972-09-21",
+    "nhs_number": "320 333 4707",
+    "ethnicity": "east_asian",
+    "gp_registered_date": "2018-12-05",
+    "contact": {
+      "email": "isla.shah@example.com",
+      "phone": "+44 7700 956240"
+    },
+    "clinical": {
+      "height_cm": 172,
+      "weight_kg": 80.1,
+      "bmi": 27.1,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 45,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1110
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-048",
+    "name": "Mei Park",
+    "date_of_birth": "1984-08-25",
+    "nhs_number": "280 168 1309",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2017-03-27",
+    "contact": {
+      "email": "mei.park@example.com",
+      "phone": "+44 7700 989951"
+    },
+    "clinical": {
+      "height_cm": 165.8,
+      "weight_kg": 58.9,
+      "bmi": 21.4,
+      "menopausal_stage": "premenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 778
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-049",
+    "name": "Zainab Nwosu",
+    "date_of_birth": "1977-02-05",
+    "nhs_number": "594 978 3936",
+    "ethnicity": "black_african",
+    "gp_registered_date": "2018-03-14",
+    "contact": {
+      "email": "zainab.nwosu@example.com",
+      "phone": "+44 7700 940347"
+    },
+    "clinical": {
+      "height_cm": 167.7,
+      "weight_kg": 74.6,
+      "bmi": 26.5,
+      "menopausal_stage": "late_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 2,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": true,
+      "dietary_calcium_mg_per_day": 625
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-050",
+    "name": "Ava Patel",
+    "date_of_birth": "1972-08-07",
+    "nhs_number": "925 278 7272",
+    "ethnicity": "black_african",
+    "gp_registered_date": "2023-07-18",
+    "contact": {
+      "email": "ava.patel@example.com",
+      "phone": "+44 7700 934265"
+    },
+    "clinical": {
+      "height_cm": 169.5,
+      "weight_kg": 67.5,
+      "bmi": 23.5,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 46,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 2,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 670
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-051",
+    "name": "Ava Khan",
+    "date_of_birth": "1980-10-19",
+    "nhs_number": "511 179 6064",
+    "ethnicity": "east_asian",
+    "gp_registered_date": "2017-03-24",
+    "contact": {
+      "email": "ava.khan@example.com",
+      "phone": "+44 7700 922341"
+    },
+    "clinical": {
+      "height_cm": 160.6,
+      "weight_kg": 68,
+      "bmi": 26.4,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 711
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-052",
+    "name": "Ava Liu",
+    "date_of_birth": "1972-08-06",
+    "nhs_number": "265 209 9206",
+    "ethnicity": "other",
+    "gp_registered_date": "2022-06-16",
+    "contact": {
+      "email": "ava.liu@example.com",
+      "phone": "+44 7700 929007"
+    },
+    "clinical": {
+      "height_cm": 171.5,
+      "weight_kg": 79,
+      "bmi": 26.9,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 46,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": true,
+      "dietary_calcium_mg_per_day": 822
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-053",
+    "name": "Tracey Davies",
+    "date_of_birth": "1983-11-17",
+    "nhs_number": "150 940 4032",
+    "ethnicity": "white",
+    "gp_registered_date": "2021-04-14",
+    "contact": {
+      "email": "tracey.davies@example.com",
+      "phone": "+44 7700 979534"
+    },
+    "clinical": {
+      "height_cm": 164.2,
+      "weight_kg": 80.1,
+      "bmi": 29.7,
+      "menopausal_stage": "premenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 1,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 843
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-054",
+    "name": "Chiamaka Mensah",
+    "date_of_birth": "1976-01-22",
+    "nhs_number": "156 139 1695",
+    "ethnicity": "white",
+    "gp_registered_date": "2018-06-13",
+    "contact": {
+      "email": "chiamaka.mensah@example.com",
+      "phone": "+44 7700 909704"
+    },
+    "clinical": {
+      "height_cm": 162.4,
+      "weight_kg": 56.6,
+      "bmi": 21.5,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 47,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 467
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-055",
+    "name": "Isla Jones",
+    "date_of_birth": "1984-03-12",
+    "nhs_number": "779 204 2483",
+    "ethnicity": "east_asian",
+    "gp_registered_date": "2019-12-12",
+    "contact": {
+      "email": "isla.jones@example.com",
+      "phone": "+44 7700 906706"
+    },
+    "clinical": {
+      "height_cm": 170.7,
+      "weight_kg": 66.5,
+      "bmi": 22.8,
+      "menopausal_stage": "premenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 481
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-056",
+    "name": "Joanne Wang",
+    "date_of_birth": "1982-04-20",
+    "nhs_number": "291 266 6974",
+    "ethnicity": "other",
+    "gp_registered_date": "2024-05-27",
+    "contact": {
+      "email": "joanne.wang@example.com",
+      "phone": "+44 7700 917828"
+    },
+    "clinical": {
+      "height_cm": 169.1,
+      "weight_kg": 67.9,
+      "bmi": 23.7,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1011
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-057",
+    "name": "Yuki Jones",
+    "date_of_birth": "1982-10-21",
+    "nhs_number": "765 522 6875",
+    "ethnicity": "black_african",
+    "gp_registered_date": "2022-11-05",
+    "contact": {
+      "email": "yuki.jones@example.com",
+      "phone": "+44 7700 979800"
+    },
+    "clinical": {
+      "height_cm": 167.7,
+      "weight_kg": 55.9,
+      "bmi": 19.9,
+      "menopausal_stage": "premenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 526
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-058",
+    "name": "Nicola Mensah",
+    "date_of_birth": "1977-07-03",
+    "nhs_number": "241 584 2314",
+    "ethnicity": "white",
+    "gp_registered_date": "2024-12-15",
+    "contact": {
+      "email": "nicola.mensah@example.com",
+      "phone": "+44 7700 930251"
+    },
+    "clinical": {
+      "height_cm": 162.6,
+      "weight_kg": 76.7,
+      "bmi": 29,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 47,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": true,
+      "dietary_calcium_mg_per_day": 776
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-059",
+    "name": "Sophie Taylor",
+    "date_of_birth": "1972-12-12",
+    "nhs_number": "769 594 4988",
+    "ethnicity": "white",
+    "gp_registered_date": "2016-04-04",
+    "contact": {
+      "email": "sophie.taylor@example.com",
+      "phone": "+44 7700 992200"
+    },
+    "clinical": {
+      "height_cm": 168.1,
+      "weight_kg": 74.8,
+      "bmi": 26.5,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 46,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1155
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-060",
+    "name": "Tracey Jones",
+    "date_of_birth": "1980-10-27",
+    "nhs_number": "784 266 3734",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2018-03-08",
+    "contact": {
+      "email": "tracey.jones@example.com",
+      "phone": "+44 7700 999383"
+    },
+    "clinical": {
+      "height_cm": 163.4,
+      "weight_kg": 56,
+      "bmi": 21,
+      "menopausal_stage": "late_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 1,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 656
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-061",
+    "name": "Helen Davies",
+    "date_of_birth": "1972-11-15",
+    "nhs_number": "237 813 6878",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2016-02-03",
+    "contact": {
+      "email": "helen.davies@example.com",
+      "phone": "+44 7700 999421"
+    },
+    "clinical": {
+      "height_cm": 170.5,
+      "weight_kg": 59,
+      "bmi": 20.3,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 46,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 643
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-062",
+    "name": "Zara Ali",
+    "date_of_birth": "1980-09-01",
+    "nhs_number": "388 530 7231",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2016-11-17",
+    "contact": {
+      "email": "zara.ali@example.com",
+      "phone": "+44 7700 977207"
+    },
+    "clinical": {
+      "height_cm": 169,
+      "weight_kg": 76.3,
+      "bmi": 26.7,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 1,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1088
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-063",
+    "name": "Anjali Smith",
+    "date_of_birth": "1972-12-12",
+    "nhs_number": "239 698 4518",
+    "ethnicity": "black_african",
+    "gp_registered_date": "2019-03-26",
+    "contact": {
+      "email": "anjali.smith@example.com",
+      "phone": "+44 7700 989693"
+    },
+    "clinical": {
+      "height_cm": 163,
+      "weight_kg": 57.2,
+      "bmi": 21.5,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 49,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 540
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-064",
+    "name": "Laura Nwosu",
+    "date_of_birth": "1974-07-09",
+    "nhs_number": "185 852 9678",
+    "ethnicity": "black_african",
+    "gp_registered_date": "2016-09-18",
+    "contact": {
+      "email": "laura.nwosu@example.com",
+      "phone": "+44 7700 951490"
+    },
+    "clinical": {
+      "height_cm": 173.4,
+      "weight_kg": 70.1,
+      "bmi": 23.3,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 49,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": true,
+      "dietary_calcium_mg_per_day": 763
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-065",
+    "name": "Amelia Evans",
+    "date_of_birth": "1973-12-02",
+    "nhs_number": "806 316 3257",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2018-07-16",
+    "contact": {
+      "email": "amelia.evans@example.com",
+      "phone": "+44 7700 998749"
+    },
+    "clinical": {
+      "height_cm": 160.4,
+      "weight_kg": 58.3,
+      "bmi": 22.7,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 50,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 537
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-066",
+    "name": "Olivia Adeyemi",
+    "date_of_birth": "1973-06-23",
+    "nhs_number": "161 848 4921",
+    "ethnicity": "white",
+    "gp_registered_date": "2017-12-28",
+    "contact": {
+      "email": "olivia.adeyemi@example.com",
+      "phone": "+44 7700 968195"
+    },
+    "clinical": {
+      "height_cm": 168.3,
+      "weight_kg": 75.1,
+      "bmi": 26.5,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 50,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 981
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-067",
+    "name": "Nia Taylor",
+    "date_of_birth": "1972-03-25",
+    "nhs_number": "621 129 2745",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2021-11-08",
+    "contact": {
+      "email": "nia.taylor@example.com",
+      "phone": "+44 7700 955706"
+    },
+    "clinical": {
+      "height_cm": 172.2,
+      "weight_kg": 77.8,
+      "bmi": 26.2,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 48,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": true,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1066
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-068",
+    "name": "Isla Taylor",
+    "date_of_birth": "1974-08-21",
+    "nhs_number": "225 652 8267",
+    "ethnicity": "white",
+    "gp_registered_date": "2017-10-02",
+    "contact": {
+      "email": "isla.taylor@example.com",
+      "phone": "+44 7700 941814"
+    },
+    "clinical": {
+      "height_cm": 160.8,
+      "weight_kg": 73.1,
+      "bmi": 28.3,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 50,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1189
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-069",
+    "name": "Chiamaka Kim",
+    "date_of_birth": "1977-11-02",
+    "nhs_number": "459 950 4946",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2020-06-08",
+    "contact": {
+      "email": "chiamaka.kim@example.com",
+      "phone": "+44 7700 951154"
+    },
+    "clinical": {
+      "height_cm": 162.3,
+      "weight_kg": 81.5,
+      "bmi": 30.9,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 47,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 660
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-070",
+    "name": "Nia Chen",
+    "date_of_birth": "1972-04-21",
+    "nhs_number": "816 542 8898",
+    "ethnicity": "white",
+    "gp_registered_date": "2018-01-17",
+    "contact": {
+      "email": "nia.chen@example.com",
+      "phone": "+44 7700 990154"
+    },
+    "clinical": {
+      "height_cm": 163.1,
+      "weight_kg": 66,
+      "bmi": 24.8,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 47,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1091
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-071",
+    "name": "Charlotte Khan",
+    "date_of_birth": "1974-06-04",
+    "nhs_number": "458 392 9415",
+    "ethnicity": "east_asian",
+    "gp_registered_date": "2024-04-23",
+    "contact": {
+      "email": "charlotte.khan@example.com",
+      "phone": "+44 7700 904127"
+    },
+    "clinical": {
+      "height_cm": 170.1,
+      "weight_kg": 67.2,
+      "bmi": 23.2,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 48,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 562
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-072",
+    "name": "Karen Okafor",
+    "date_of_birth": "1981-11-27",
+    "nhs_number": "443 879 9571",
+    "ethnicity": "white",
+    "gp_registered_date": "2022-03-22",
+    "contact": {
+      "email": "karen.okafor@example.com",
+      "phone": "+44 7700 906838"
+    },
+    "clinical": {
+      "height_cm": 174.9,
+      "weight_kg": 77.2,
+      "bmi": 25.2,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 993
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-073",
+    "name": "Laura Wang",
+    "date_of_birth": "1975-02-06",
+    "nhs_number": "211 385 2581",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2018-02-26",
+    "contact": {
+      "email": "laura.wang@example.com",
+      "phone": "+44 7700 939735"
+    },
+    "clinical": {
+      "height_cm": 168.3,
+      "weight_kg": 71.6,
+      "bmi": 25.3,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 43,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1077
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-074",
+    "name": "Grace Ahmed",
+    "date_of_birth": "1980-09-11",
+    "nhs_number": "503 222 1520",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2017-06-04",
+    "contact": {
+      "email": "grace.ahmed@example.com",
+      "phone": "+44 7700 997409"
+    },
+    "clinical": {
+      "height_cm": 167.6,
+      "weight_kg": 63.3,
+      "bmi": 22.5,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 3,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 977
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-075",
+    "name": "Folake Nwosu",
+    "date_of_birth": "1980-03-03",
+    "nhs_number": "214 362 3654",
+    "ethnicity": "white",
+    "gp_registered_date": "2021-09-07",
+    "contact": {
+      "email": "folake.nwosu@example.com",
+      "phone": "+44 7700 922538"
+    },
+    "clinical": {
+      "height_cm": 162,
+      "weight_kg": 79.7,
+      "bmi": 30.4,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1003
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-076",
+    "name": "Priya Nwosu",
+    "date_of_birth": "1982-06-26",
+    "nhs_number": "127 680 6493",
+    "ethnicity": "black_african",
+    "gp_registered_date": "2022-12-26",
+    "contact": {
+      "email": "priya.nwosu@example.com",
+      "phone": "+44 7700 990405"
+    },
+    "clinical": {
+      "height_cm": 170.2,
+      "weight_kg": 74,
+      "bmi": 25.5,
+      "menopausal_stage": "premenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 782
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-077",
+    "name": "Amelia Liu",
+    "date_of_birth": "1978-10-25",
+    "nhs_number": "532 603 4896",
+    "ethnicity": "black_african",
+    "gp_registered_date": "2017-02-13",
+    "contact": {
+      "email": "amelia.liu@example.com",
+      "phone": "+44 7700 908528"
+    },
+    "clinical": {
+      "height_cm": 169.1,
+      "weight_kg": 60.5,
+      "bmi": 21.2,
+      "menopausal_stage": "late_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 509
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-078",
+    "name": "Ava Brown",
+    "date_of_birth": "1981-12-16",
+    "nhs_number": "293 658 3131",
+    "ethnicity": "white",
+    "gp_registered_date": "2020-01-07",
+    "contact": {
+      "email": "ava.brown@example.com",
+      "phone": "+44 7700 940241"
+    },
+    "clinical": {
+      "height_cm": 169.7,
+      "weight_kg": 83,
+      "bmi": 28.8,
+      "menopausal_stage": "late_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": true,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 482
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-079",
+    "name": "Adaeze Smith",
+    "date_of_birth": "1975-10-16",
+    "nhs_number": "270 891 8214",
+    "ethnicity": "white",
+    "gp_registered_date": "2019-09-16",
+    "contact": {
+      "email": "adaeze.smith@example.com",
+      "phone": "+44 7700 931797"
+    },
+    "clinical": {
+      "height_cm": 174.4,
+      "weight_kg": 84.2,
+      "bmi": 27.7,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 49,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": true,
+      "dietary_calcium_mg_per_day": 473
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-080",
+    "name": "Emma Brown",
+    "date_of_birth": "1972-03-22",
+    "nhs_number": "112 494 3619",
+    "ethnicity": "south_asian",
+    "gp_registered_date": "2023-06-01",
+    "contact": {
+      "email": "emma.brown@example.com",
+      "phone": "+44 7700 963110"
+    },
+    "clinical": {
+      "height_cm": 173.4,
+      "weight_kg": 66.5,
+      "bmi": 22.1,
+      "menopausal_stage": "postmenopausal_5_10yr",
+      "age_at_fmp": 47,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1063
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-081",
+    "name": "Emma Singh",
+    "date_of_birth": "1984-07-10",
+    "nhs_number": "896 937 6353",
+    "ethnicity": "white",
+    "gp_registered_date": "2023-07-18",
+    "contact": {
+      "email": "emma.singh@example.com",
+      "phone": "+44 7700 960856"
+    },
+    "clinical": {
+      "height_cm": 162.3,
+      "weight_kg": 77.9,
+      "bmi": 29.6,
+      "menopausal_stage": "early_perimenopausal",
+      "age_at_fmp": null,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 3,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": true,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 1012
+    },
+    "latest_alert": null
+  },
+  {
+    "id": "p-082",
+    "name": "Amelia Mensah",
+    "date_of_birth": "1973-12-02",
+    "nhs_number": "398 266 6501",
+    "ethnicity": "white",
+    "gp_registered_date": "2016-11-16",
+    "contact": {
+      "email": "amelia.mensah@example.com",
+      "phone": "+44 7700 951090"
+    },
+    "clinical": {
+      "height_cm": 174.7,
+      "weight_kg": 66.3,
+      "bmi": 21.7,
+      "menopausal_stage": "postmenopausal_under_5yr",
+      "age_at_fmp": 51,
+      "prior_fragility_fracture": false,
+      "parent_hip_fracture": false,
+      "current_smoker": false,
+      "alcohol_units_per_day": 0,
+      "glucocorticoid_use": false,
+      "rheumatoid_arthritis": false,
+      "current_hrt": false,
+      "dietary_calcium_mg_per_day": 457
+    },
+    "latest_alert": null
+  }
+]
