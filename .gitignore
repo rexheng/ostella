@@ -47,3 +47,7 @@ next-env.d.ts
 # Claude Code workspace
 .claude/
 tasks/
+
+# Playwright MCP debris
+.playwright-mcp/
+landing-full.png
