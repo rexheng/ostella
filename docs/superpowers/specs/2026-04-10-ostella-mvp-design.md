@@ -28,7 +28,7 @@ This spec defines what gets built. It does not define how the build is sequenced
 2. **No authentication.** No NextAuth, no Clerk, no login screens. A role switcher cookie distinguishes GP view from Patient view; neither view is gated.
 3. **No persistence of "sent alerts" or any mutating state.** Clicking *Send alert* shows an in-app confirmation; refreshing the page loses it. Alert state that must survive a refresh is pre-baked into `patients.json`.
 4. **No real email delivery in v1.** The `/api/send-alert` endpoint always returns a simulated payload. Real Resend integration is deferred to task #12.
-5. **No verified clinical model weights in v1.** The `lib/model-weights.ts` file ships with FRAX-literature-derived placeholder values behind a visible STUB banner. Verified weights are delivered by Rex's teammates and integrated via task #8.
+5. **No clinical validation against real patient outcomes in v1.** The `lib/model-weights.ts` file ships with **literature-verified** coefficients (traced to primary sources with DOIs — see §7 and `docs/model-weights-rationale.md`), but the model has not been validated against real-patient outcomes in a prospective UK primary-care cohort. It remains a research prototype pending that validation.
 6. **No search, no pagination, no history, no analytics.** 82 patients fit on one screen with sort + filter; anything beyond that is out of scope.
 7. **No moderate-risk or low-risk email templates.** Only the high-risk template is authored and only high-risk patients expose a *Send alert* button. Lower-risk tiers display passive "monitor" / "no action" copy.
 8. **No clinical use.** An "early-stage research prototype, not for clinical use" disclaimer appears in the landing page footer.
@@ -43,7 +43,7 @@ Choices made during brainstorming with their rationale attached. Future deviatio
 | Framework | Next.js 14 (App Router) + TypeScript + Tailwind + shadcn/ui | Vercel-native; server components read JSON without API calls; `shadcn` gives production-grade primitives without lock-in. |
 | Data source | `data/patients.json`, 82 synthetic records | Rex specified synthetic JSON for a single practice in one region. No ORM or schema migrations. |
 | Authentication | None; cookie-based role switcher | Pitch velocity. Adding auth only adds surface area for the live demo to break on. |
-| Risk model | Linear log-hazard score, 14 features, placeholder FRAX-derived coefficients behind STUB banner | Interface is production-shaped; values are literature-plausible so the demo is credible; teammates swap values later without touching UI. |
+| Risk model | Linear log-hazard score, 14 features, literature-verified coefficients (Kanis FRAX series, SWAN, WHI, Curtis CPRD) | Interface is production-shaped; values trace to primary sources with DOIs; contested / derived / UK-extrapolated values flagged in code. Auditability is the core pitch asset. |
 | Email delivery | Simulated in-app modal, no external dependency | Zero pre-flight setup for the pitch. Architecture leaves a single clean swap-point for real Resend integration. |
 | Pitch flow | Role switcher in demo header (`GP view` / `Patient view`) | Fastest live-demo path; matches the two-subagent build plan. |
 | Demo determinism | "Sarah Chen" is hand-authored, always top of GP dashboard, always the hero page | Pitch demos cannot have random surprises. |
@@ -71,7 +71,7 @@ app/
 
 lib/
 ├── risk-model.ts                   # pure scoring function (Phase 0)
-├── model-weights.ts                # STUB — placeholder coefficients (Phase 0)
+├── model-weights.ts                # Literature-verified coefficients (delivered 2026-04-10)
 ├── patients.ts                     # JSON loader + typed helpers (Phase 0)
 ├── email-templates.ts              # high-risk template, Phase 0 — frozen before fork
 ├── demo-state.ts                   # role + active-patient cookie helpers (Phase 0)
@@ -224,7 +224,7 @@ Produces the entire contract surface before any view-building begins.
 
 - Next.js + TypeScript + Tailwind + shadcn scaffold.
 - `lib/types.ts` — every type in §4.4. This file is the single source of truth for all cross-subagent contracts.
-- `lib/model-weights.ts` — STUB coefficient file (see §7).
+- `lib/model-weights.ts` — literature-verified coefficients (already delivered by the clinical team on 2026-04-10; Task 0.5 migrates it to import types from `lib/types.ts`). See §7.
 - `lib/risk-model.ts` — pure function `scorePatient(patient: Patient): ScoredPatient`.
 - Unit tests for `risk-model.ts` — interface-level only: shape of output, monotonicity, tier-boundary behaviour. No test asserts specific coefficient values.
 - `lib/patients.ts` — loader + typed helpers.
@@ -289,26 +289,32 @@ The **feature contribution chart on Screen #3 is the primary pitch asset**. Ever
 
 ## 7. Risk model
 
-### 7.1 Status: STUB
+### 7.1 Status: VERIFIED (v0.1)
 
-Ships in v1 as a **placeholder**. Behaviour is architecturally correct and literature-plausible; coefficient values are pending clinical-team verification. See §11 for the handoff.
+`lib/model-weights.ts` ships with **literature-verified** coefficients as of 2026-04-10, produced by a dedicated research pass that traces every HR to a primary source with DOI or PMID. This replaces the placeholder/STUB status originally planned in this section — task #8 in §11 is now addressable in-session rather than by external teammates.
+
+Tier thresholds (`TIER_THRESHOLDS.moderate` and `.high`) remain placeholder until calibrated against the synthetic cohort — that step is blocked until `data/patients.json` exists (see §7.4).
 
 `lib/model-weights.ts` opens with:
 
 ```typescript
 /**
- * ⚠️  PLACEHOLDER WEIGHTS — PENDING TEAMMATE VERIFICATION
+ * Ostella Perimenopause Osteoporosis Risk Model — Coefficient Weights
  *
- * These values are FRAX-literature approximations used to unblock
- * the UI build. DO NOT cite these in any clinical or stakeholder
- * context. Replace with verified values before v1.0.
+ * STATUS: Literature-verified (this file replaces the pre-verification
+ * stub referenced by task #8). Values below trace to primary sources
+ * with DOIs. Threshold calibration and synthetic-cohort sanity checks
+ * remain blocked on data/patients.json and lib/risk-model.ts per
+ * docs/model-calibration.md §7.
  *
- * Owner: Ostella clinical team
- * Tracking: task #8
+ * See docs/model-weights-rationale.md for per-coefficient decision
+ * history and docs/model-calibration.md for the calibration memo.
  */
 ```
 
-The GP patient detail page and the landing page both carry a visible "Placeholder weights — clinical validation in progress" tag (task #9), removable in one edit when the handoff lands.
+The GP patient detail page and the landing page continue to carry a "Research prototype — not for clinical use" tag (task #9) since clinical validation against real-patient data is still out of scope for v1, but the "placeholder weights" framing is retired.
+
+Full per-coefficient rationale — why each HR was picked, which alternatives were rejected, confidence ratings, contested-value handling — lives in `docs/model-weights-rationale.md`. Short calibration memo (reference patient, interaction warnings, sanity-check results, worked examples) lives in `docs/model-calibration.md`. Both are read-once documents the clinical reviewer can use to audit the model.
 
 ### 7.2 Functional form
 
@@ -326,42 +332,73 @@ The score is read as *"how many times more likely than the reference woman is th
 
 ### 7.3 Feature set (14 features)
 
-Each entry in `model-weights.ts` is shaped as `{ key, label, hr, beta, citation }` — the `citation` field is what the GP patient detail chart reads when rendering hover tooltips (see §7.5). The `key` matches the `feature_key` in `RiskContribution` (§4.4).
+Each entry in `lib/model-weights.ts` conforms to a `CoefficientEntry` shape carrying the contract fields `{ key, label, hr, beta, citation }` (consumed by the GP patient detail chart in §7.5) plus rich metadata fields for clinical audit: `ci95`, `source` (full citation with DOI), `population`, `confidence`, `notes`, `actionable`, `actionable_rationale`, `flags`, `category`, and `age_interaction_note`. The `key` matches `feature_key` in `RiskContribution` (§4.4).
 
-**Core FRAX features** — coefficients from Kanis et al. 2007/2008 FRAX derivation papers:
+Four evidence flags may be attached to any coefficient:
+- **CONTESTED** — primary literature disagrees by more than 30% on the point estimate (2 features: `bmi_high`, `low_calcium`)
+- **DERIVED** — no paper reports the HR directly; computed from a surrogate such as BMD trajectory × BMD→fracture gradient (5 features: all `menopausal_stage` levels)
+- **UK_EXTRAPOLATED** — HR comes from a non-UK cohort and requires extrapolation to UK primary care (3 features: the three non-White `ethnicity_baseline` levels)
+- **OLD_UNREPLICATED** — primary source >15 years old with no post-2015 replication (no coefficient carries this flag — every Kanis 2004–2005 paper has been replicated in modern meta-analyses)
 
-| Key | Label | Type | Placeholder HR | Placeholder β | Citation (placeholder) |
+**Core FRAX features** — nine coefficients sourced from the Kanis FRAX-derivation series (2004–2007) and Van Staa 2006 (UK GPRD) for RA. Every one replicated in a 2015+ meta-analysis.
+
+| Key | Label | Type | Verified HR | Verified β | CI95 | Citation |
+|---|---|---|---|---|---|---|
+| `age_above_50` | Age above 50 | continuous (per year) | 1.043 | +0.042 | — | Kanis et al. 2007, Osteoporos Int |
+| `bmi_low` | BMI < 20 | boolean | 1.28 | +0.247 | [1.15, 1.42] | De Laet et al. 2005, Osteoporos Int |
+| `bmi_high` | BMI > 30 | boolean | 0.95 | −0.051 | [0.83, 1.08] | De Laet 2005 / Compston 2011 GLOW (**CONTESTED**) |
+| `prior_fracture` | Prior fragility fracture | boolean | 1.86 | +0.621 | [1.58, 2.17] | Kanis et al. 2004, Bone |
+| `parent_hip_fracture` | Parent hip fracture | boolean | 1.54 | +0.432 | [1.25, 1.88] | Kanis et al. 2004, Bone |
+| `current_smoker` | Current smoker | boolean | 1.25 | +0.223 | [1.15, 1.36] | Kanis et al. 2005, Osteoporos Int |
+| `alcohol_high` | Alcohol ≥ 3 units/day | boolean | 1.38 | +0.322 | [1.16, 1.65] | Kanis et al. 2005, Osteoporos Int |
+| `glucocorticoid_use` | Glucocorticoid use (ever) | boolean | 1.66 | +0.507 | [1.42, 1.92] | Kanis et al. 2004, JBMR |
+| `rheumatoid_arthritis` | Rheumatoid arthritis | boolean | 1.56 | +0.445 | [1.20, 2.02] | Van Staa et al. 2006, Arthritis Rheum |
+
+**Perimenopause-specific features** — four coefficients sourced from SWAN (menopausal stage), Svejme 2012 (early menopause), the WHI HT arm (HRT), and Bolland 2015 BMJ systematic review (calcium).
+
+| Key | Label | Type | Verified HR | Verified β | Citation |
 |---|---|---|---|---|---|
-| `age_above_50` | Age above 50 | continuous (per year) | ~1.08 | +0.077 | Kanis et al. 2007 |
-| `bmi_low` | BMI < 20 | boolean | 1.95 | +0.668 | Kanis et al. 2007 |
-| `bmi_high` | BMI > 30 | boolean | 0.75 | −0.288 | Kanis et al. 2007 |
-| `prior_fracture` | Prior fragility fracture | boolean | 1.85 | +0.615 | Kanis et al. 2007 |
-| `parent_hip_fracture` | Parent hip fracture | boolean | 2.28 | +0.824 | Kanis et al. 2004 |
-| `current_smoker` | Current smoker | boolean | 1.29 | +0.255 | Kanis et al. 2005 |
-| `alcohol_high` | Alcohol ≥ 3 units/day | boolean | 1.38 | +0.322 | Kanis et al. 2005 |
-| `glucocorticoid_use` | Glucocorticoid use (current/recent) | boolean | 2.31 | +0.837 | Kanis et al. 2004 |
-| `rheumatoid_arthritis` | Rheumatoid arthritis | boolean | 1.95 | +0.668 | Kanis et al. 2007 |
+| `menopausal_stage` | Menopausal stage | 5-level categorical | 0.98 / 1.00 / 1.04 / 1.29 / 1.48 | −0.020 / 0 / +0.039 / +0.255 / +0.392 | Greendale et al. 2012 (SWAN) × Johnell 2005 (BMD→fracture) — **DERIVED** |
+| `early_menopause` | Early menopause (FMP < 45) | boolean | 1.83 | +0.604 | Svejme et al. 2012, BJOG |
+| `current_hrt` | Current HRT use | boolean | 0.66 | −0.416 | Cauley et al. 2003, JAMA (WHI E+P arm, RCT) |
+| `low_calcium` | Low dietary calcium (<700 mg/day) | boolean | 1.05 | +0.049 | Bolland et al. 2015, BMJ (**CONTESTED**) |
 
-**Perimenopause-specific features** — from SWAN bone substudy, WHI:
+Menopausal stage levels, in order: `premenopausal` / `early_perimenopausal` (reference) / `late_perimenopausal` / `postmenopausal_under_5yr` / `postmenopausal_5_10yr`. All five carry the `DERIVED` flag because no primary source reports MOF HRs stratified by STRAW+10 stage in the 42–55 band; they are computed from SWAN BMD trajectories × the Johnell BMD→fracture gradient of HR ≈ 1.6 per SD. See `docs/model-weights-rationale.md` §6.10 for the full derivation.
 
-| Key | Label | Type | Placeholder HR | Placeholder β | Citation (placeholder) |
-|---|---|---|---|---|---|
-| `menopausal_stage` | Menopausal stage | 5-level ordinal (premeno → post 5–10yr) | 0.70 / 1.00 / 1.25 / 1.80 / 2.20 | −0.357 / 0 / +0.223 / +0.588 / +0.788 | Greendale et al. 2012 (SWAN) |
-| `early_menopause` | Early menopause (FMP age < 45) | boolean | 1.75 | +0.560 | WHI |
-| `current_hrt` | Current HRT use | boolean | 0.60 | −0.511 | WHI HT arm |
-| `low_calcium` | Low dietary calcium (<700 mg/day) | boolean | 1.15 | +0.140 | IOM / NOF |
+**Ethnicity baseline adjustment** — one 5-level categorical (four published levels + `other` fallback), UK-calibrated where possible.
 
-**Ethnicity baseline adjustment** — one coefficient, UK-calibrated:
+| Key | Label | Type | Verified HR | Verified β | Citation | Flag |
+|---|---|---|---|---|---|---|
+| `ethnicity_baseline: white` | White (reference) | — | 1.00 | 0.000 | Curtis et al. 2016, Bone (CPRD) | — |
+| `ethnicity_baseline: south_asian` | South Asian | — | 0.70 | −0.357 | Curtis et al. 2016, Bone (CPRD) | UK_EXTRAPOLATED (age band) |
+| `ethnicity_baseline: east_asian` | East Asian | — | 0.75 | −0.288 | Cauley et al. 2007, JBMR (WHI) | UK_EXTRAPOLATED |
+| `ethnicity_baseline: black_african` | Black African | — | 0.50 | −0.693 | Cauley et al. 2005, JAMA | UK_EXTRAPOLATED |
+| `ethnicity_baseline: other` | Other / not recorded | — | 1.00 | 0.000 | Defaults to reference | — |
 
-| Key | Label | Type | Placeholder HR | Placeholder β | Citation (placeholder) |
-|---|---|---|---|---|---|
-| `ethnicity_baseline` | Ethnicity | 4-level categorical (white / S.Asian / E.Asian / Black African) | 1.00 / 0.95 / 0.80 / 0.50 | 0 / −0.051 / −0.223 / −0.693 | UK FRAX + Cauley et al. 2005 |
+The `other` fallback defaults to the White reference HR (1.00). This is the conservative choice — it never incorrectly reduces a patient's predicted risk based on uncertain ancestry coding, surfaces as a zero-length bar in the feature contribution chart (visibly acknowledged rather than silently assumed), and the accompanying `actionable_rationale` explicitly prompts for a more specific category if one is available.
 
-Exact values and per-coefficient DOI citations will be pinned in `lib/model-weights.ts`. Verified values from the clinical team may change magnitudes and may add or remove features — the interface is the contract, not the individual values.
+#### 7.3.1 Interaction rules (consumed by `lib/risk-model.ts`)
+
+The linear log-hazard form assumes features combine independently. Two interactions violate that assumption strongly enough to need explicit handling in the scoring function, not just in the weights. Both rules are exported as constants from `lib/model-weights.ts` so the scoring function reads them rather than hardcoding.
+
+1. **`STAGE_HRT_INTERACTION_RULE`** — default `"collapse_stage_to_reference_when_on_hrt"`. When `current_hrt === true`, the scoring function substitutes `menopausal_stage = early_perimenopausal` (reference) before applying the stage coefficient, then applies the HRT coefficient normally. Reasoning: the stage HRs are driven by transmenopause BMD loss; HRT suppresses that loss; scoring both independently double-counts the protective effect. See `docs/model-weights-rationale.md` §9.1.
+2. **`EARLY_MENOPAUSE_INTERACTION_RULE`** — default `"only_apply_when_peri_or_earlier"`. The scoring function applies the `early_menopause` coefficient only when `menopausal_stage` is `premenopausal`, `early_perimenopausal`, or `late_perimenopausal`. Once the patient is postmenopausal, the stage coefficient already captures the relevant physiology, so applying both would double-count. See `docs/model-weights-rationale.md` §9.2.
+
+Both rules are defaults, not commitments — alternative values for each constant are documented in the type definitions. The spec team can pick different defaults without touching the scoring function.
 
 ### 7.4 Tier thresholds
 
-Hand-calibrated to produce a realistic distribution on the synthetic cohort: roughly **~55% low / ~30% moderate / ~15% high**, matching UK perimenopausal primary-care populations. Thresholds are relative-risk cutoffs, explicitly disclosed in-app as not-FRAX-probabilities. A production deployment would swap these for FRAX-API 10-year probabilities with NOGG cutoffs.
+`TIER_THRESHOLDS` in `lib/model-weights.ts` ships as a placeholder: `{ moderate: 1.5, high: 3.5 }`. These are relative-risk cutoffs — the score for a patient with RR ≥ 3.5 is "high", RR ≥ 1.5 is "moderate", otherwise "low". Thresholds are explicitly disclosed in-app as *not* FRAX-probabilities; a production deployment would swap these for FRAX-API 10-year probabilities with NOGG cutoffs.
+
+**These placeholders must be calibrated against the synthetic cohort before deployment.** The target distribution is ~55% low / ~30% moderate / ~15% high, matching UK perimenopausal primary-care populations. Calibration is a sequential Phase 0 step performed after `data/patients.json` is generated:
+
+1. Run `scorePatient()` across all 82 synthetic patients.
+2. Sweep candidate `(moderate, high)` pairs against the target distribution.
+3. Pick the pair that produces the closest match.
+4. Document the final thresholds and the resulting histogram in `docs/model-calibration.md` §7.
+5. Hand-verify that "Sarah Chen" (p-001) remains tier `high` under the calibrated thresholds — if not, either re-author Sarah's clinical profile or flag that the calibration target is incompatible with the hero demo.
+
+If the calibrated distribution is materially off (e.g. the model produces 70% high), that's a signal the synthetic cohort distribution needs rebalancing — the weights are literature-derived and defensible, so the cohort generator is the place to adjust.
 
 ### 7.5 Model explainer UX
 
@@ -558,9 +595,11 @@ Tracked in the in-session task list. Task IDs #1–#6 are brainstorming-workflow
 
 | Task | Status | Blocker |
 |---|---|---|
-| #7 — Stub risk model with placeholder weights | pending | Phase 0 |
-| #8 — HANDOFF: swap stub weights for teammate-verified values | pending | Teammates delivering values |
-| #9 — Mark placeholder status visibly in UI | pending | Phase 1 Subagent A + C |
+| #7 — Stub risk model with verified weights | complete (v0.1) | `lib/model-weights.ts` delivered 2026-04-10; see `docs/model-weights-rationale.md` and `docs/model-calibration.md` |
+| #8 — HANDOFF: swap stub weights for teammate-verified values | superseded by #7 | N/A |
+| #8a — Calibrate `TIER_THRESHOLDS` against 82-patient synthetic cohort | pending | `data/patients.json` + `lib/risk-model.ts` |
+| #8b — Implement `STAGE_HRT_INTERACTION_RULE` and `EARLY_MENOPAUSE_INTERACTION_RULE` in `lib/risk-model.ts` | pending | Phase 0 |
+| #9 — Mark "research prototype" status visibly in UI | pending | Phase 1 Subagent A + C |
 | #10 — Write project CLAUDE.md after spec approval | pending | Spec approval |
 | #11 — Stub email delivery with in-app preview modal | pending | Phase 1 Subagent A |
 | #12 — HANDOFF: swap stub email for real Resend delivery | pending | Future pitch-readiness decision |

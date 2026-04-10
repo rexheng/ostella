@@ -304,7 +304,16 @@ export type PatientAlert = {
 
 export type RiskTier = "low" | "moderate" | "high";
 
+export type EvidenceFlag =
+  | "CONTESTED"
+  | "OLD_UNREPLICATED"
+  | "UK_EXTRAPOLATED"
+  | "DERIVED";
+
+export type Confidence = "high" | "medium" | "low";
+
 export type RiskContribution = {
+  // --- Required fields, consumed by every chart rendering ---
   feature_key: string;
   feature_label: string;
   patient_value: string | number | boolean;
@@ -313,6 +322,18 @@ export type RiskContribution = {
   contribution: number;
   direction: "increases_risk" | "reduces_risk" | "neutral";
   citation: string;
+  // --- Optional enrichment fields, populated from lib/model-weights.ts
+  //     CoefficientEntry when available. The chart's hover tooltip
+  //     renders whichever of these are present. Adding new optional
+  //     fields here is allowed without breaking Phase 1 consumers. ---
+  ci95?: readonly [number, number] | null;
+  source?: string;                  // full citation incl. DOI/PMID
+  population?: string;              // study cohort summary
+  confidence?: Confidence;
+  notes?: string;                   // caveats, contested / derived discussion
+  flags?: readonly EvidenceFlag[];
+  actionable?: boolean;
+  actionable_rationale?: string;
 };
 
 export type ScoredPatient = {
@@ -382,97 +403,58 @@ git commit -m "feat: freeze Phase 0 TypeScript contract surface in lib/types.ts"
 
 ---
 
-### Task 0.5: Stub `lib/model-weights.ts` with placeholder coefficients
+### Task 0.5: Migrate the clinical team's `lib/model-weights.ts` to use `lib/types.ts`
 
 **Files:**
-- Create: `lib/model-weights.ts`
+- Modify: `lib/model-weights.ts` (the file already exists — delivered by a parallel clinical-team agent session on 2026-04-10; see `docs/model-calibration.md` and `docs/model-weights-rationale.md`)
 
-- [ ] **Step 1: Create `lib/model-weights.ts`**
+**Context — IMPORTANT.** Unlike what the original plan anticipated, the clinical team has already delivered a fully literature-verified `lib/model-weights.ts`. It contains 14 features, every coefficient traced to a primary-source DOI with 95% CIs, evidence-quality flags (CONTESTED / UK_EXTRAPOLATED / DERIVED / OLD_UNREPLICATED), population summaries, and per-feature `actionable_rationale` strings. It uses a typed `WEIGHTS` discriminated-union object (`ContinuousFeature | BooleanFeature | CategoricalFeature<K>`), not flat arrays. The field naming already matches spec §4.4.
+
+**This task does NOT rewrite that file.** It (a) reconciles the type duplication — the file currently re-declares `Ethnicity`, `MenopausalStage`, and `RiskTier` inline as a temporary convenience; Task 0.4 has now added them to `lib/types.ts`, so those inline declarations must be removed and imported from `@/lib/types` instead — and (b) typechecks the result.
+
+Do NOT modify any `WEIGHTS` entry, any `hr` / `beta` / `citation` / `source` / `notes` value, or the `TIER_THRESHOLDS`, `STAGE_HRT_INTERACTION_RULE`, or `EARLY_MENOPAUSE_INTERACTION_RULE` constants. Those are the clinical team's deliverable and are frozen for Phase 0.
+
+- [ ] **Step 1: Read the current state of `lib/model-weights.ts`**
+
+Skim the file. Note these key exports that Task 0.6 will consume:
+
+- `WEIGHTS` — the typed discriminated-union object
+- `CoefficientEntry`, `ContinuousFeature`, `BooleanFeature`, `CategoricalFeature<K>`, `EvidenceFlag`, `Confidence`, `FeatureCategory` — the internal type vocabulary
+- `TIER_THRESHOLDS` — `{ moderate: number, high: number }` as const
+- `STAGE_HRT_INTERACTION_RULE` — used by Task 0.6 scoring logic
+- `EARLY_MENOPAUSE_INTERACTION_RULE` — used by Task 0.6 scoring logic
+
+- [ ] **Step 2: Remove the inline type duplication**
+
+Near the top of the file you will see a block commented `TYPES — will migrate to lib/types.ts in spec Phase 0` containing inline declarations of `Ethnicity`, `MenopausalStage`, and `RiskTier`. Delete those three `export type` declarations. They are now owned by `lib/types.ts` as of Task 0.4.
+
+- [ ] **Step 3: Add a single import from `@/lib/types` at the top of the file**
 
 ```typescript
-/**
- * ⚠️  PLACEHOLDER WEIGHTS — PENDING TEAMMATE VERIFICATION
- *
- * These values are FRAX-literature approximations used to unblock
- * the UI build. DO NOT cite these in any clinical or stakeholder
- * context. Replace with verified values before v1.0.
- *
- * Canonical weights schema: spec §7.3
- * Owner: Ostella clinical team
- * Tracking: session task #8
- */
-
-export type WeightEntry = {
-  key: string;
-  label: string;
-  hr: number;
-  beta: number;
-  citation: string;
-};
-
-// --- Core FRAX features ---
-export const CORE_FRAX_WEIGHTS: WeightEntry[] = [
-  { key: "age_above_50",       label: "Age above 50",                 hr: 1.08, beta:  0.077, citation: "Kanis et al. 2007, Osteoporos Int (PLACEHOLDER)" },
-  { key: "bmi_low",            label: "BMI < 20",                     hr: 1.95, beta:  0.668, citation: "Kanis et al. 2007, Osteoporos Int (PLACEHOLDER)" },
-  { key: "bmi_high",           label: "BMI > 30",                     hr: 0.75, beta: -0.288, citation: "Kanis et al. 2007, Osteoporos Int (PLACEHOLDER)" },
-  { key: "prior_fracture",     label: "Prior fragility fracture",     hr: 1.85, beta:  0.615, citation: "Kanis et al. 2007, Osteoporos Int (PLACEHOLDER)" },
-  { key: "parent_hip_fracture",label: "Parent hip fracture",          hr: 2.28, beta:  0.824, citation: "Kanis et al. 2004, Osteoporos Int (PLACEHOLDER)" },
-  { key: "current_smoker",     label: "Current smoker",               hr: 1.29, beta:  0.255, citation: "Kanis et al. 2005, Osteoporos Int (PLACEHOLDER)" },
-  { key: "alcohol_high",       label: "Alcohol ≥ 3 units/day",        hr: 1.38, beta:  0.322, citation: "Kanis et al. 2005, Osteoporos Int (PLACEHOLDER)" },
-  { key: "glucocorticoid_use", label: "Glucocorticoid use",           hr: 2.31, beta:  0.837, citation: "Kanis et al. 2004, Osteoporos Int (PLACEHOLDER)" },
-  { key: "rheumatoid_arthritis",label: "Rheumatoid arthritis",        hr: 1.95, beta:  0.668, citation: "Kanis et al. 2007, Osteoporos Int (PLACEHOLDER)" },
-];
-
-// --- Perimenopause-specific features ---
-
-// Menopausal stage is a 5-level ordinal; each level has its own β relative to the early_perimenopausal reference.
-export const MENOPAUSAL_STAGE_WEIGHTS: Record<string, WeightEntry> = {
-  premenopausal:            { key: "menopausal_stage:premenopausal",            label: "Premenopausal",            hr: 0.70, beta: -0.357, citation: "Greendale et al. 2012, SWAN (PLACEHOLDER)" },
-  early_perimenopausal:     { key: "menopausal_stage:early_perimenopausal",     label: "Early perimenopausal",     hr: 1.00, beta:  0.000, citation: "Greendale et al. 2012, SWAN (PLACEHOLDER)" },
-  late_perimenopausal:      { key: "menopausal_stage:late_perimenopausal",      label: "Late perimenopausal",      hr: 1.25, beta:  0.223, citation: "Greendale et al. 2012, SWAN (PLACEHOLDER)" },
-  postmenopausal_under_5yr: { key: "menopausal_stage:postmenopausal_under_5yr", label: "Postmenopausal < 5yr",     hr: 1.80, beta:  0.588, citation: "Greendale et al. 2012, SWAN (PLACEHOLDER)" },
-  postmenopausal_5_10yr:    { key: "menopausal_stage:postmenopausal_5_10yr",    label: "Postmenopausal 5–10yr",    hr: 2.20, beta:  0.788, citation: "Greendale et al. 2012, SWAN (PLACEHOLDER)" },
-};
-
-export const PERI_WEIGHTS: WeightEntry[] = [
-  { key: "early_menopause", label: "Early menopause (FMP < 45)", hr: 1.75, beta:  0.560, citation: "WHI (PLACEHOLDER)" },
-  { key: "current_hrt",     label: "Current HRT use",            hr: 0.60, beta: -0.511, citation: "WHI HT arm (PLACEHOLDER)" },
-  { key: "low_calcium",     label: "Low dietary calcium",        hr: 1.15, beta:  0.140, citation: "IOM / NOF (PLACEHOLDER)" },
-];
-
-// --- Ethnicity baseline adjustment ---
-export const ETHNICITY_WEIGHTS: Record<string, WeightEntry> = {
-  white:         { key: "ethnicity:white",         label: "European ancestry",       hr: 1.00, beta:  0.000, citation: "UK FRAX reference (PLACEHOLDER)" },
-  south_asian:   { key: "ethnicity:south_asian",   label: "South Asian ancestry",    hr: 0.95, beta: -0.051, citation: "Cauley et al. 2005 (PLACEHOLDER)" },
-  east_asian:    { key: "ethnicity:east_asian",    label: "East Asian ancestry",     hr: 0.80, beta: -0.223, citation: "Cauley et al. 2005 (PLACEHOLDER)" },
-  black_african: { key: "ethnicity:black_african", label: "Black African ancestry",  hr: 0.50, beta: -0.693, citation: "Cauley et al. 2005 (PLACEHOLDER)" },
-  other:         { key: "ethnicity:other",         label: "Other ancestry",          hr: 1.00, beta:  0.000, citation: "Default to reference (PLACEHOLDER)" },
-};
-
-// --- Tier thresholds (hand-calibrated — may be retuned in Task 0.10 after patients.json is generated) ---
-export const TIER_THRESHOLDS = {
-  moderate_min_rr: 1.5,
-  high_min_rr: 3.5,
-} as const;
+import type { Ethnicity, MenopausalStage, RiskTier } from "@/lib/types";
 ```
 
-- [ ] **Step 2: Typecheck**
+The rest of the file (the `CoefficientEntry` interface, the `WEIGHTS` object, the interaction rules) references these types and should continue to compile unchanged.
+
+- [ ] **Step 4: Typecheck**
 
 ```bash
 pnpm tsc --noEmit
 ```
 
-Expected: no errors.
+Expected: no errors. If there are errors reported inside `lib/model-weights.ts` after only these two edits, STOP and report — do not modify `WEIGHTS` values to get typecheck to pass.
 
-- [ ] **Step 3: Commit**
+- [ ] **Step 5: Commit**
 
 ```bash
 git add lib/model-weights.ts
-git commit -m "feat(stub): add placeholder FRAX-literature weights
+git commit -m "refactor: lift Ethnicity/MenopausalStage/RiskTier to lib/types.ts
 
-Weights are marked PLACEHOLDER in every citation string.
-Tracked for replacement by task #8 when teammates deliver
-verified values."
+Clinical-team deliverable lib/model-weights.ts re-declared these
+three types inline as a temporary convenience. Now that
+lib/types.ts is the canonical contract surface (Task 0.4), remove
+the duplicates and import from @/lib/types. No coefficient values
+changed."
 ```
 
 ---
@@ -589,29 +571,129 @@ describe("scorePatient", () => {
 });
 ```
 
-- [ ] **Step 2: Run the tests to confirm they fail**
+- [ ] **Step 2: Add interaction-mitigation and enrichment tests to the same `describe` block**
+
+Append the following tests inside the same `describe("scorePatient", …)` block, before its closing `});`. They enforce the clinical team's two required interaction mitigations (see `docs/model-calibration.md` §4.2 and §4.3) plus enrichment-field plumbing.
+
+```typescript
+  // --- HRT × menopausal-stage mitigation (calibration memo §4.2) ---
+  //
+  // A woman who is post_under_5yr AND on HRT should NOT be scored
+  // (stage_HR × HRT_HR) — HRT suppresses the BMD loss that drives the
+  // stage HR. Under the default rule
+  // "collapse_stage_to_reference_when_on_hrt", her score should equal
+  // that of an early_perimenopausal woman on HRT with all other fields
+  // identical.
+  it("collapses post-menopausal stage to reference when on HRT", () => {
+    const a = scorePatient(
+      makeReferencePatient({
+        menopausal_stage: "postmenopausal_under_5yr",
+        age_at_fmp: 48,
+        current_hrt: true,
+      })
+    );
+    const b = scorePatient(
+      makeReferencePatient({
+        menopausal_stage: "early_perimenopausal",
+        age_at_fmp: null,
+        current_hrt: true,
+      })
+    );
+    // Stage contribution should be suppressed; HRT contribution applies to both.
+    expect(a.score).toBeCloseTo(b.score, 3);
+    const stageContribA = a.contributions.find((c) =>
+      c.feature_key.startsWith("menopausal_stage")
+    );
+    expect(stageContribA).toBeUndefined(); // stage zeroed when collapsed
+  });
+
+  // --- Early menopause × menopausal-stage mitigation (calibration memo §4.3) ---
+  //
+  // Default rule "only_apply_when_peri_or_earlier": the early_menopause
+  // coefficient is suppressed once the patient has advanced to
+  // postmenopausal_under_5yr or later, because the estrogen-deficiency
+  // effect is already reflected in the stage HR.
+  it("suppresses early-menopause coefficient once postmenopausal", () => {
+    const postWithEarlyFmp = scorePatient(
+      makeReferencePatient({
+        menopausal_stage: "postmenopausal_under_5yr",
+        age_at_fmp: 43,
+      })
+    );
+    const postWithNormalFmp = scorePatient(
+      makeReferencePatient({
+        menopausal_stage: "postmenopausal_under_5yr",
+        age_at_fmp: 48,
+      })
+    );
+    // Both patients should score identically — early_menopause does not fire.
+    expect(postWithEarlyFmp.score).toBeCloseTo(postWithNormalFmp.score, 3);
+    const earlyContrib = postWithEarlyFmp.contributions.find(
+      (c) => c.feature_key === "early_menopause"
+    );
+    expect(earlyContrib).toBeUndefined();
+
+    // But an early-meno woman still in the peri window DOES get the coefficient.
+    const periWithEarlyFmp = scorePatient(
+      makeReferencePatient({
+        menopausal_stage: "late_perimenopausal",
+        age_at_fmp: 43,
+      })
+    );
+    const periEarlyContrib = periWithEarlyFmp.contributions.find(
+      (c) => c.feature_key === "early_menopause"
+    );
+    expect(periEarlyContrib).toBeDefined();
+  });
+
+  // --- Enrichment-field plumbing (optional fields populated from WEIGHTS) ---
+  it("populates enrichment fields on contributions when available", () => {
+    const result = scorePatient(
+      makeReferencePatient({ current_smoker: true, parent_hip_fracture: true })
+    );
+    const smoker = result.contributions.find((c) => c.feature_key === "current_smoker")!;
+    expect(smoker.source).toBeDefined();          // full citation present
+    expect(smoker.population).toBeDefined();      // cohort summary present
+    expect(smoker.confidence).toBeDefined();      // confidence rating present
+    expect(smoker.actionable).toBe(true);         // smoking is modifiable
+    expect(smoker.actionable_rationale).toBeDefined();
+  });
+```
+
+- [ ] **Step 3: Run the full test file to confirm all ten tests fail**
 
 ```bash
 pnpm test
 ```
 
-Expected: all seven tests fail with "scorePatient is not defined" or equivalent import error.
+Expected: all tests fail — `scorePatient` is not yet defined.
 
-- [ ] **Step 3: Implement `lib/risk-model.ts`**
+- [ ] **Step 4: Implement `lib/risk-model.ts`**
+
+This version consumes the clinical team's typed `WEIGHTS` discriminated-union object and applies both interaction mitigations using the exported rule constants.
 
 ```typescript
 // lib/risk-model.ts
-// Pure scoring function. Reads coefficients from lib/model-weights.ts.
-// See spec §7 for the functional form.
+// Pure scoring function. Consumes the clinical team's typed WEIGHTS
+// object from lib/model-weights.ts and applies the stage×HRT and
+// early-menopause×stage interaction mitigations encoded there.
+//
+// See spec §7 and docs/model-calibration.md §4.2–§4.3 for the
+// functional form and interaction rationale.
 
-import type { Patient, ScoredPatient, RiskContribution, RiskTier } from "@/lib/types";
+import type {
+  Patient,
+  ScoredPatient,
+  RiskContribution,
+  RiskTier,
+  MenopausalStage,
+  Ethnicity,
+} from "@/lib/types";
 import {
-  CORE_FRAX_WEIGHTS,
-  MENOPAUSAL_STAGE_WEIGHTS,
-  PERI_WEIGHTS,
-  ETHNICITY_WEIGHTS,
+  WEIGHTS,
   TIER_THRESHOLDS,
-  type WeightEntry,
+  STAGE_HRT_INTERACTION_RULE,
+  EARLY_MENOPAUSE_INTERACTION_RULE,
 } from "@/lib/model-weights";
 
 const REFERENCE_AGE = 50;
@@ -626,14 +708,14 @@ function ageFromDob(dob: string, today: Date = new Date()): number {
   return age;
 }
 
-function pushContribution(
-  out: RiskContribution[],
-  entry: WeightEntry,
+/** Build a RiskContribution from a CoefficientEntry, copying all enrichment fields. */
+function contributionFrom(
+  // Using the structural shape so this file doesn't import CoefficientEntry directly.
+  entry: (typeof WEIGHTS.bmi_low)["coefficient"],
   patientValue: string | number | boolean,
   contribution: number
-) {
-  if (contribution === 0) return;
-  out.push({
+): RiskContribution {
+  return {
     feature_key: entry.key,
     feature_label: entry.label,
     patient_value: patientValue,
@@ -641,9 +723,71 @@ function pushContribution(
     beta: entry.beta,
     contribution,
     direction:
-      contribution > 0 ? "increases_risk" : contribution < 0 ? "reduces_risk" : "neutral",
+      contribution > 0
+        ? "increases_risk"
+        : contribution < 0
+        ? "reduces_risk"
+        : "neutral",
     citation: entry.citation,
-  });
+    // --- Enrichment fields (optional on RiskContribution) ---
+    ci95: entry.ci95 ?? null,
+    source: entry.source,
+    population: entry.population,
+    confidence: entry.confidence,
+    notes: entry.notes,
+    flags: entry.flags,
+    actionable: entry.actionable,
+    actionable_rationale: entry.actionable_rationale,
+  };
+}
+
+/**
+ * Resolve the effective menopausal stage for scoring, applying the
+ * STAGE_HRT_INTERACTION_RULE. The clinical team's default rule
+ * "collapse_stage_to_reference_when_on_hrt" means: if the patient is on
+ * HRT AND their declared stage is postmenopausal_*, treat the stage as
+ * early_perimenopausal (the reference level) so the stage contribution
+ * does not double-count estrogen-deficiency with the HRT benefit.
+ */
+function effectiveMenopausalStage(
+  declared: MenopausalStage,
+  currentHrt: boolean
+): MenopausalStage {
+  if (!currentHrt) return declared;
+  if (STAGE_HRT_INTERACTION_RULE === "collapse_stage_to_reference_when_on_hrt") {
+    if (
+      declared === "postmenopausal_under_5yr" ||
+      declared === "postmenopausal_5_10yr"
+    ) {
+      return "early_perimenopausal";
+    }
+  }
+  // Other rules ("zero_stage_beta_when_on_hrt", "half_stage_beta_when_on_hrt")
+  // are not implemented — if a future clinical revision switches the rule,
+  // extend this function and add tests for the new semantics.
+  return declared;
+}
+
+/**
+ * Should the early_menopause boolean coefficient fire?
+ * Default rule "only_apply_when_peri_or_earlier": only if the patient is
+ * still in pre / early-peri / late-peri. Once she has advanced to
+ * postmenopausal_*, the effect is already captured by the stage HR.
+ */
+function shouldApplyEarlyMenopause(
+  ageAtFmp: number | null,
+  stage: MenopausalStage
+): boolean {
+  if (ageAtFmp === null || ageAtFmp >= 45) return false;
+  if (EARLY_MENOPAUSE_INTERACTION_RULE === "only_apply_when_peri_or_earlier") {
+    return (
+      stage === "premenopausal" ||
+      stage === "early_perimenopausal" ||
+      stage === "late_perimenopausal"
+    );
+  }
+  // Other rules not implemented yet.
+  return true;
 }
 
 export function scorePatient(patient: Patient): ScoredPatient {
@@ -651,80 +795,89 @@ export function scorePatient(patient: Patient): ScoredPatient {
   const contributions: RiskContribution[] = [];
   let score = 0;
 
-  // --- Age above 50 (continuous, per year) ---
+  const addContribution = (rc: RiskContribution) => {
+    if (rc.contribution === 0) return;
+    contributions.push(rc);
+    score += rc.contribution;
+  };
+
+  // --- 1. Age above 50 (continuous, per year) ---
   const age = ageFromDob(patient.date_of_birth);
-  const ageEntry = CORE_FRAX_WEIGHTS.find((w) => w.key === "age_above_50")!;
-  const ageContribution = ageEntry.beta * (age - REFERENCE_AGE);
-  pushContribution(contributions, { ...ageEntry, label: `Age (${age})` }, age, ageContribution);
-  score += ageContribution;
+  const ageFeature = WEIGHTS.age_above_50;
+  const ageBeta = ageFeature.coefficient.beta * (age - REFERENCE_AGE);
+  addContribution(
+    contributionFrom(
+      { ...ageFeature.coefficient, label: `Age (${age})` },
+      age,
+      ageBeta
+    )
+  );
 
-  // --- BMI (low / high bands) ---
+  // --- 2. BMI bands (boolean features) ---
   if (c.bmi < 20) {
-    const e = CORE_FRAX_WEIGHTS.find((w) => w.key === "bmi_low")!;
-    pushContribution(contributions, e, c.bmi, e.beta);
-    score += e.beta;
+    const e = WEIGHTS.bmi_low.coefficient;
+    addContribution(contributionFrom(e, c.bmi, e.beta));
   } else if (c.bmi > 30) {
-    const e = CORE_FRAX_WEIGHTS.find((w) => w.key === "bmi_high")!;
-    pushContribution(contributions, e, c.bmi, e.beta);
-    score += e.beta;
+    const e = WEIGHTS.bmi_high.coefficient;
+    addContribution(contributionFrom(e, c.bmi, e.beta));
   }
 
-  // --- Boolean FRAX features ---
-  const booleanCoreMap: Array<[keyof Patient["clinical"], string]> = [
-    ["prior_fragility_fracture", "prior_fracture"],
-    ["parent_hip_fracture",       "parent_hip_fracture"],
-    ["current_smoker",            "current_smoker"],
-    ["glucocorticoid_use",        "glucocorticoid_use"],
-    ["rheumatoid_arthritis",      "rheumatoid_arthritis"],
-  ];
-  for (const [field, key] of booleanCoreMap) {
-    if (c[field] === true) {
-      const e = CORE_FRAX_WEIGHTS.find((w) => w.key === key)!;
-      pushContribution(contributions, e, true, e.beta);
-      score += e.beta;
-    }
+  // --- 3. Boolean FRAX features ---
+  if (c.prior_fragility_fracture) {
+    const e = WEIGHTS.prior_fracture.coefficient;
+    addContribution(contributionFrom(e, true, e.beta));
   }
-
-  // --- Alcohol ≥ 3 units/day ---
+  if (c.parent_hip_fracture) {
+    const e = WEIGHTS.parent_hip_fracture.coefficient;
+    addContribution(contributionFrom(e, true, e.beta));
+  }
+  if (c.current_smoker) {
+    const e = WEIGHTS.current_smoker.coefficient;
+    addContribution(contributionFrom(e, true, e.beta));
+  }
   if (c.alcohol_units_per_day >= 3) {
-    const e = CORE_FRAX_WEIGHTS.find((w) => w.key === "alcohol_high")!;
-    pushContribution(contributions, e, c.alcohol_units_per_day, e.beta);
-    score += e.beta;
+    const e = WEIGHTS.alcohol_high.coefficient;
+    addContribution(contributionFrom(e, c.alcohol_units_per_day, e.beta));
+  }
+  if (c.glucocorticoid_use) {
+    const e = WEIGHTS.glucocorticoid_use.coefficient;
+    addContribution(contributionFrom(e, true, e.beta));
+  }
+  if (c.rheumatoid_arthritis) {
+    const e = WEIGHTS.rheumatoid_arthritis.coefficient;
+    addContribution(contributionFrom(e, true, e.beta));
   }
 
-  // --- Menopausal stage ---
-  const stageEntry = MENOPAUSAL_STAGE_WEIGHTS[c.menopausal_stage];
-  if (stageEntry && stageEntry.beta !== 0) {
-    pushContribution(contributions, stageEntry, c.menopausal_stage, stageEntry.beta);
-    score += stageEntry.beta;
+  // --- 4. Menopausal stage — with HRT interaction mitigation ---
+  const effectiveStage = effectiveMenopausalStage(c.menopausal_stage, c.current_hrt);
+  const stageEntry = WEIGHTS.menopausal_stage.levels[effectiveStage];
+  if (stageEntry.beta !== 0) {
+    addContribution(contributionFrom(stageEntry, effectiveStage, stageEntry.beta));
   }
 
-  // --- Early menopause ---
-  if (c.age_at_fmp !== null && c.age_at_fmp < 45) {
-    const e = PERI_WEIGHTS.find((w) => w.key === "early_menopause")!;
-    pushContribution(contributions, e, c.age_at_fmp, e.beta);
-    score += e.beta;
+  // --- 5. Early menopause — with stage interaction mitigation ---
+  if (shouldApplyEarlyMenopause(c.age_at_fmp, c.menopausal_stage)) {
+    const e = WEIGHTS.early_menopause.coefficient;
+    addContribution(contributionFrom(e, c.age_at_fmp!, e.beta));
   }
 
-  // --- Current HRT (protective) ---
+  // --- 6. Current HRT (protective, always applies when on HRT) ---
   if (c.current_hrt) {
-    const e = PERI_WEIGHTS.find((w) => w.key === "current_hrt")!;
-    pushContribution(contributions, e, true, e.beta);
-    score += e.beta;
+    const e = WEIGHTS.current_hrt.coefficient;
+    addContribution(contributionFrom(e, true, e.beta));
   }
 
-  // --- Low dietary calcium ---
+  // --- 7. Low dietary calcium ---
   if (c.dietary_calcium_mg_per_day < 700) {
-    const e = PERI_WEIGHTS.find((w) => w.key === "low_calcium")!;
-    pushContribution(contributions, e, c.dietary_calcium_mg_per_day, e.beta);
-    score += e.beta;
+    const e = WEIGHTS.low_calcium.coefficient;
+    addContribution(contributionFrom(e, c.dietary_calcium_mg_per_day, e.beta));
   }
 
-  // --- Ethnicity baseline adjustment ---
-  const ethEntry = ETHNICITY_WEIGHTS[patient.ethnicity];
+  // --- 8. Ethnicity baseline adjustment ---
+  const ethnicityKey = patient.ethnicity as Ethnicity;
+  const ethEntry = WEIGHTS.ethnicity_baseline.levels[ethnicityKey];
   if (ethEntry && ethEntry.beta !== 0) {
-    pushContribution(contributions, ethEntry, patient.ethnicity, ethEntry.beta);
-    score += ethEntry.beta;
+    addContribution(contributionFrom(ethEntry, ethnicityKey, ethEntry.beta));
   }
 
   // --- Sort contributions by absolute magnitude descending ---
@@ -732,9 +885,9 @@ export function scorePatient(patient: Patient): ScoredPatient {
 
   const relative_risk = Math.exp(score);
   const tier: RiskTier =
-    relative_risk >= TIER_THRESHOLDS.high_min_rr
+    relative_risk >= TIER_THRESHOLDS.high
       ? "high"
-      : relative_risk >= TIER_THRESHOLDS.moderate_min_rr
+      : relative_risk >= TIER_THRESHOLDS.moderate
       ? "moderate"
       : "low";
 
@@ -742,23 +895,30 @@ export function scorePatient(patient: Patient): ScoredPatient {
 }
 ```
 
-- [ ] **Step 4: Run the tests to confirm they pass**
+- [ ] **Step 5: Run the tests to confirm they pass**
 
 ```bash
 pnpm test
 ```
 
-Expected: all seven `scorePatient` tests pass.
+Expected: all ten `scorePatient` tests pass (seven base + two interaction mitigations + one enrichment plumbing).
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Commit**
 
 ```bash
 git add lib/risk-model.ts lib/__tests__/risk-model.test.ts
-git commit -m "feat: add risk-model with interface-level unit tests
+git commit -m "feat: add risk-model consuming clinical-team WEIGHTS
 
-Tests exercise shape, monotonicity, and tier boundaries only,
-so they stay green when task #8 swaps placeholder weights for
-verified values."
+Implements the scoring function against the typed WEIGHTS
+discriminated union in lib/model-weights.ts, applying both
+interaction mitigations from docs/model-calibration.md §4.2
+(stage × HRT) and §4.3 (early menopause × stage).
+
+Tests exercise shape, monotonicity, tier boundaries, both
+interaction rules, and enrichment-field plumbing — they stay
+green when the clinical team revises coefficient values, as
+long as the WEIGHTS interface and the interaction rule
+constants don't change."
 ```
 
 ---
@@ -1872,12 +2032,43 @@ export function FeatureContributionChart({ contributions }: { contributions: Ris
                   </div>
                 </div>
               </TooltipTrigger>
-              <TooltipContent side="right" className="max-w-xs">
-                <div className="space-y-1 text-xs">
-                  <p className="font-medium">{c.feature_label}</p>
-                  <p>Hazard ratio: <span className="font-mono">{c.hazard_ratio}</span></p>
-                  <p>β = log(HR) = <span className="font-mono">{c.beta.toFixed(3)}</span></p>
-                  <p>Patient value: <span className="font-mono">{String(c.patient_value)}</span></p>
+              <TooltipContent side="right" className="max-w-sm">
+                <div className="space-y-1.5 text-xs">
+                  <p className="font-semibold">{c.feature_label}</p>
+                  <p>
+                    HR <span className="font-mono">{c.hazard_ratio}</span>
+                    {c.ci95 && (
+                      <span className="text-slate-500">
+                        {" "}
+                        (95% CI {c.ci95[0]}–{c.ci95[1]})
+                      </span>
+                    )}
+                  </p>
+                  <p>
+                    β = log(HR) ={" "}
+                    <span className="font-mono">{c.beta.toFixed(3)}</span>
+                  </p>
+                  <p>
+                    Patient value:{" "}
+                    <span className="font-mono">{String(c.patient_value)}</span>
+                  </p>
+                  {c.flags && c.flags.length > 0 && (
+                    <p className="flex flex-wrap gap-1 pt-0.5">
+                      {c.flags.map((f) => (
+                        <span
+                          key={f}
+                          className="rounded bg-amber-50 px-1.5 py-0.5 text-[10px] font-medium text-amber-800"
+                        >
+                          {f}
+                        </span>
+                      ))}
+                    </p>
+                  )}
+                  {c.population && (
+                    <p className="text-slate-600">
+                      <span className="font-medium">Cohort:</span> {c.population}
+                    </p>
+                  )}
                   <p className="pt-1 italic text-slate-500">{c.citation}</p>
                 </div>
               </TooltipContent>
@@ -1934,7 +2125,7 @@ export default function PatientDetailPage({ params }: { params: { id: string } }
             </p>
           </div>
           <span className="rounded border border-amber-300 bg-amber-50 px-2 py-1 text-xs text-amber-800">
-            Placeholder weights — clinical validation in progress
+            Literature-verified weights — cohort calibration in progress
           </span>
         </div>
         <div className="mt-6">
@@ -2684,7 +2875,7 @@ Hero must have two CTAs:
 - `/demo/gp` — "See the GP view"
 - `/demo/patient` — "See the patient view"
 
-ModelTransparency must include the visible banner: "Placeholder weights — clinical validation in progress."
+ModelTransparency must include the visible banner: "Literature-verified weights — cohort calibration in progress." The copy should explain that every coefficient traces to a primary-source DOI (point at `docs/model-calibration.md` for the interested reader) and that tier thresholds are still being tuned against the synthetic cohort.
 
 GpInTheLoop must make explicit: "Every outbound message is composed, edited, and sent by a named GP. The tool is an assistant, not an autopilot."
 
