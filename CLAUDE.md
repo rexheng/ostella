@@ -51,3 +51,10 @@ These are easy to get wrong and hard to catch in code review.
 ## Deploy target
 
 Vercel. The repo should `vercel deploy` with zero environment variables required. If you find yourself reaching for an env var, you are probably violating one of the stubs above.
+
+## Deployed
+
+- **Production:** https://ostella.vercel.app
+- **First deploy:** 2026-04-10 (tag `v0.1.0-mvp`, commit `865dbe3`)
+- **Vercel project:** `ostella` (under `rexheng` scope)
+- **Deploy command:** `vercel --prod --yes` from the repo root — no env vars, no link prompt after the first run.
