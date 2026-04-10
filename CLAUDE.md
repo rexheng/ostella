@@ -28,6 +28,11 @@ These are easy to get wrong and hard to catch in code review.
 
 6. **Only the high-risk email template exists.** Moderate and low tiers have no Send button. If you think you need a second template, re-read spec §9.3 first.
 
+7. **Weights, simulation, and paper move in lockstep.** If you edit any coefficient in `lib/model-weights.ts`, three other places MUST be updated in the same change:
+   - `scripts/simulate_cohort.py` — the `BETA`, `STAGE_BETA`, and `ETHNICITY_BETA` dicts mirror the TS weights numerically.
+   - `docs/paper/simulate_cohort.py` — identical copy of the canonical script, kept alongside the .tex so Overleaf uploads are self-contained. Always `cp scripts/simulate_cohort.py docs/paper/simulate_cohort.py` after editing the canonical one.
+   - `docs/paper/ostella-risk-model.tex` — Table 2 (Adopted coefficients), Table 9 (Example C counterfactual), Appendix C (multiplier derivation), and all cohort-summary / counterfactual numbers in §3 are hand-transcribed from a simulation run. Re-run the script with `python scripts/simulate_cohort.py` (seed 20260410), then re-transcribe. The paper is pre-clinical / methodological — never reframe it as a clinical validation.
+
 ## File locations that matter
 
 | Thing | Where |
@@ -40,6 +45,12 @@ These are easy to get wrong and hard to catch in code review.
 | Synthetic cohort | `data/patients.json` |
 | High-risk email template | `lib/email-templates.ts` |
 | Design tokens | `tailwind.config.ts` + theme file |
+| Model calibration memo (research-only) | `docs/model-calibration.md` |
+| Per-coefficient decision log | `docs/model-weights-rationale.md` |
+| Overleaf working paper (methodological) | `docs/paper/ostella-risk-model.tex` |
+| Canonical simulation + counterfactual script | `scripts/simulate_cohort.py` (seed `20260410`) |
+| Script mirror for Overleaf self-contained upload | `docs/paper/simulate_cohort.py` |
+| Last simulation-run JSON (reproducibility) | `scripts/simulate_cohort_results.json` |
 
 ## What NOT to add without asking
 
@@ -56,5 +67,7 @@ Vercel. The repo should `vercel deploy` with zero environment variables required
 
 - **Production:** https://ostella.vercel.app
 - **First deploy:** 2026-04-10 (tag `v0.1.0-mvp`, commit `865dbe3`)
+- **Redesign deploy:** 2026-04-10 (tag `v0.2.0-redesign`, commit `3783649`) — sage/lavender/cream palette, DM Sans + Fraunces, investor-framed landing with standards marquee, two-tier GP worklist, editorial patient portal
 - **Vercel project:** `ostella` (under `rexheng` scope)
 - **Deploy command:** `vercel --prod --yes` from the repo root — no env vars, no link prompt after the first run.
+- **Pre-deploy hygiene on Windows:** `rm -rf .next` before every `pnpm build` if OneDrive is syncing the repo — OneDrive.Sync.Service holds file handles on `.next` and causes spurious `Cannot find module './XXX.js'` errors. Subagents have hit this repeatedly.
