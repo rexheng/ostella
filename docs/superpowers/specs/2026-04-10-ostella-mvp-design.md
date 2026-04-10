@@ -73,8 +73,9 @@ lib/
 ├── risk-model.ts                   # pure scoring function (Phase 0)
 ├── model-weights.ts                # STUB — placeholder coefficients (Phase 0)
 ├── patients.ts                     # JSON loader + typed helpers (Phase 0)
-├── email-templates.ts              # high-risk template only (Phase 0 or A)
-└── types.ts                        # Patient, RiskContribution, etc. (Phase 0)
+├── email-templates.ts              # high-risk template, Phase 0 — frozen before fork
+├── demo-state.ts                   # role + active-patient cookie helpers (Phase 0)
+└── types.ts                        # Patient, ScoredPatient, RiskContribution, AlertRequest/Response, DemoState (Phase 0)
 
 data/
 └── patients.json                   # 82 synthetic records (Phase 0)
@@ -109,22 +110,109 @@ docs/
 
 ### 4.3 The only mutating endpoint
 
-`POST /api/send-alert` accepts `{ patient_id, subject, body }` and always returns:
+`POST /api/send-alert` accepts an `AlertRequest` and returns an `AlertResponse`. Both types are defined in §4.4. The v1 handler always returns `{ simulated: true, ... }` regardless of input. No state is written. The GP-side client receives the response and opens an `AlertPreviewModal` that displays the rendered email with a "Delivered (simulated)" badge.
 
-```json
-{
-  "simulated": true,
-  "preview": {
-    "to": "sarah.chen@example.com",
-    "from": "Dr. Amira Hassan <hassan@regentspark.nhs.uk>",
-    "subject": "...",
-    "body": "...",
-    "rendered_at": "2026-04-10T14:23:00Z"
+### 4.4 Shared type contracts (frozen in Phase 0)
+
+Every type listed below must exist in `lib/types.ts` before Phase 1 begins. Subagents A, B, and C import exclusively from this file for any shared data shape. Adding, renaming, or changing fields in these types during Phase 1 is forbidden without re-syncing all three subagents.
+
+```typescript
+// lib/types.ts
+
+// --- Patient record (see §8.2 for full field semantics) ---
+export type Ethnicity = "white" | "south_asian" | "east_asian" | "black_african" | "other"
+
+export type MenopausalStage =
+  | "premenopausal"
+  | "early_perimenopausal"
+  | "late_perimenopausal"
+  | "postmenopausal_under_5yr"
+  | "postmenopausal_5_10yr"
+
+export type Patient = {
+  id: string
+  name: string
+  date_of_birth: string
+  nhs_number: string
+  ethnicity: Ethnicity
+  gp_registered_date: string
+  contact: { email: string; phone: string }
+  clinical: {
+    height_cm: number
+    weight_kg: number
+    bmi: number
+    menopausal_stage: MenopausalStage
+    age_at_fmp: number | null
+    prior_fragility_fracture: boolean
+    parent_hip_fracture: boolean
+    current_smoker: boolean
+    alcohol_units_per_day: number
+    glucocorticoid_use: boolean
+    rheumatoid_arthritis: boolean
+    current_hrt: boolean
+    dietary_calcium_mg_per_day: number
   }
+  latest_alert: PatientAlert | null
+}
+
+export type PatientAlert = {
+  sent_at: string                  // ISO timestamp
+  sent_by: string                  // "Dr. Amira Hassan"
+  risk_level_at_send: "high" | "moderate"
+  message: string                  // full email body
+}
+
+// --- Model output ---
+export type RiskTier = "low" | "moderate" | "high"
+
+export type RiskContribution = {
+  feature_key: string              // stable machine key, e.g. "parent_hip_fracture"
+  feature_label: string            // human label, e.g. "Parent hip fracture"
+  patient_value: string | number | boolean  // as presented to the UI
+  hazard_ratio: number             // raw HR from source literature
+  beta: number                     // log(HR), signed
+  contribution: number             // β × xᵢ, signed — the bar length
+  direction: "increases_risk" | "reduces_risk" | "neutral"
+  citation: string                 // short citation string, e.g. "Kanis et al. 2007, Osteoporos Int"
+}
+
+export type ScoredPatient = {
+  patient: Patient
+  score: number                    // Σ βᵢ · xᵢ
+  relative_risk: number            // exp(score)
+  tier: RiskTier
+  contributions: RiskContribution[]  // every non-zero contributing feature, sorted by |contribution| desc
+}
+
+// --- Alert API contract ---
+export type AlertRequest = {
+  patient_id: string
+  subject: string
+  body: string
+}
+
+export type AlertPreview = {
+  to: string
+  from: string                     // "Dr. Amira Hassan <hassan@regentspark.nhs.uk>"
+  subject: string
+  body: string
+  rendered_at: string              // ISO timestamp
+}
+
+export type AlertResponse =
+  | { simulated: true;  preview: AlertPreview }
+  | { simulated: false; preview: AlertPreview; provider_id: string }  // shape for future Resend swap (task #12)
+
+// --- Demo session state (cookie-backed) ---
+export type DemoRole = "gp" | "patient"
+
+export type DemoState = {
+  role: DemoRole
+  active_patient_id: string        // which patient the /demo/patient view renders; defaults to "p-001" (Sarah Chen)
 }
 ```
 
-No state is written. The GP-side client receives the preview and opens an `AlertPreviewModal` that displays the rendered email with a "Delivered (simulated)" badge.
+`DemoState` is persisted in a single cookie (`ostella_demo`) as a JSON-encoded string. `lib/demo-state.ts` exposes `getDemoState()` and `setDemoState(partial)` helpers. On first visit to any `/demo/*` route, `DemoState` initializes to `{ role: "gp", active_patient_id: "p-001" }`. The role switcher mutates `role`; navigating to `/demo/patient?as=<id>` mutates `active_patient_id` to the given id and strips the query param via redirect.
 
 ## 5. Parallel subagent strategy
 
@@ -135,15 +223,18 @@ Phase 0 is strictly sequential; Phase 1 runs three subagents in parallel; Phase 
 Produces the entire contract surface before any view-building begins.
 
 - Next.js + TypeScript + Tailwind + shadcn scaffold.
-- `lib/types.ts` — `Patient`, `RiskTier`, `RiskContribution`, `ScoredPatient`, `AlertPayload`.
+- `lib/types.ts` — every type in §4.4. This file is the single source of truth for all cross-subagent contracts.
 - `lib/model-weights.ts` — STUB coefficient file (see §7).
 - `lib/risk-model.ts` — pure function `scorePatient(patient: Patient): ScoredPatient`.
 - Unit tests for `risk-model.ts` — interface-level only: shape of output, monotonicity, tier-boundary behaviour. No test asserts specific coefficient values.
 - `lib/patients.ts` — loader + typed helpers.
+- `lib/email-templates.ts` — `highRiskAlert(patient, gp)` pure function, canonical wording frozen (see §9.3). Removed from Subagent A's ownership list — Phase 0 delivers this so Subagent A consumes a stable template.
+- `lib/demo-state.ts` — `getDemoState()` / `setDemoState()` cookie helpers.
 - `data/patients.json` — 82 synthetic records (see §8).
 - `components/RoleSwitcher.tsx` + `RiskBadge.tsx`.
-- `app/demo/layout.tsx` — the shared shell both view-subtrees render into.
+- `app/demo/layout.tsx` — the shared shell both view-subtrees render into, reading `DemoState` and rendering the role switcher header.
 - Tailwind theme + design tokens (one file).
+- After `patients.json` is generated, **iterate tier thresholds** (§7.4) against the actual cohort distribution so that the 55/30/15 split holds. Thresholds may move away from 1.5 / 3.5 if the generator distribution demands it — the values in §7.4 are the target, not a contract.
 - Landing page copy brief in the spec — Subagent C reads this spec and works from §10 directly.
 
 ### Phase 1 — Parallel fork (three subagents)
@@ -157,7 +248,7 @@ Independent file trees. Contract surface is frozen as of Phase 0.
   - `components/FeatureContributionChart.tsx`
   - `components/AlertComposer.tsx`
   - `components/AlertPreviewModal.tsx`
-  - `lib/email-templates.ts` (high-risk template only)
+  - Subagent A **consumes** `lib/email-templates.ts` (delivered by Phase 0) but does not own it.
 
 - **Subagent B — "Patient portal view"** owns:
   - `app/demo/patient/page.tsx`
@@ -192,7 +283,7 @@ Nine screen states total across seven routes.
 | 6 | `/demo/patient/refer` | Self-referral form | B | Symptoms checklist + preferred time + message; submits to local success state, no persistence. |
 | 7 | `/demo/gp/patients/[id]` (modal overlay) | Alert preview modal | A | Post-send overlay showing rendered email with "Delivered (simulated)" tag + timestamp. |
 | 8 | `/demo/gp` (empty state) | Empty filter result | A | Handled inline; not a separate route. |
-| 9 | `/demo/patient` (unalerted state) | Low-risk patient portal | B | For a non-flagged patient — shows education library and "your risk is currently low, here's how to keep it that way." |
+| 9 | `/demo/patient?as=<patient_id>` (unalerted state) | Low-risk patient portal | B | For a non-flagged patient — shows education library and "your risk is currently low, here's how to keep it that way." Reached by explicit query param on the portal URL; see §4.4 for how `?as=` mutates `DemoState.active_patient_id`. Without the query param, the portal always defaults to Sarah Chen (`p-001`). |
 
 The **feature contribution chart on Screen #3 is the primary pitch asset**. Every other screen is scaffolding around this one moment of transparency.
 
@@ -235,34 +326,36 @@ The score is read as *"how many times more likely than the reference woman is th
 
 ### 7.3 Feature set (14 features)
 
+Each entry in `model-weights.ts` is shaped as `{ key, label, hr, beta, citation }` — the `citation` field is what the GP patient detail chart reads when rendering hover tooltips (see §7.5). The `key` matches the `feature_key` in `RiskContribution` (§4.4).
+
 **Core FRAX features** — coefficients from Kanis et al. 2007/2008 FRAX derivation papers:
 
-| Feature | Type | Placeholder HR | Placeholder β |
-|---|---|---|---|
-| Age above 50 | continuous (per year) | ~1.08 | +0.077 |
-| BMI < 20 | boolean | 1.95 | +0.668 |
-| BMI > 30 | boolean | 0.75 | −0.288 |
-| Prior fragility fracture | boolean | 1.85 | +0.615 |
-| Parent hip fracture | boolean | 2.28 | +0.824 |
-| Current smoker | boolean | 1.29 | +0.255 |
-| Alcohol ≥ 3 units/day | boolean | 1.38 | +0.322 |
-| Glucocorticoid use (current/recent) | boolean | 2.31 | +0.837 |
-| Rheumatoid arthritis | boolean | 1.95 | +0.668 |
+| Key | Label | Type | Placeholder HR | Placeholder β | Citation (placeholder) |
+|---|---|---|---|---|---|
+| `age_above_50` | Age above 50 | continuous (per year) | ~1.08 | +0.077 | Kanis et al. 2007 |
+| `bmi_low` | BMI < 20 | boolean | 1.95 | +0.668 | Kanis et al. 2007 |
+| `bmi_high` | BMI > 30 | boolean | 0.75 | −0.288 | Kanis et al. 2007 |
+| `prior_fracture` | Prior fragility fracture | boolean | 1.85 | +0.615 | Kanis et al. 2007 |
+| `parent_hip_fracture` | Parent hip fracture | boolean | 2.28 | +0.824 | Kanis et al. 2004 |
+| `current_smoker` | Current smoker | boolean | 1.29 | +0.255 | Kanis et al. 2005 |
+| `alcohol_high` | Alcohol ≥ 3 units/day | boolean | 1.38 | +0.322 | Kanis et al. 2005 |
+| `glucocorticoid_use` | Glucocorticoid use (current/recent) | boolean | 2.31 | +0.837 | Kanis et al. 2004 |
+| `rheumatoid_arthritis` | Rheumatoid arthritis | boolean | 1.95 | +0.668 | Kanis et al. 2007 |
 
 **Perimenopause-specific features** — from SWAN bone substudy, WHI:
 
-| Feature | Type | Placeholder HR | Placeholder β |
-|---|---|---|---|
-| Menopausal stage | 5-level ordinal (premeno → post 5–10yr) | 0.70 / 1.00 / 1.25 / 1.80 / 2.20 | −0.357 / 0 / +0.223 / +0.588 / +0.788 |
-| Early menopause (FMP age < 45) | boolean | 1.75 | +0.560 |
-| Current HRT use | boolean | 0.60 | −0.511 |
-| Low dietary calcium (<700 mg/day) | boolean | 1.15 | +0.140 |
+| Key | Label | Type | Placeholder HR | Placeholder β | Citation (placeholder) |
+|---|---|---|---|---|---|
+| `menopausal_stage` | Menopausal stage | 5-level ordinal (premeno → post 5–10yr) | 0.70 / 1.00 / 1.25 / 1.80 / 2.20 | −0.357 / 0 / +0.223 / +0.588 / +0.788 | Greendale et al. 2012 (SWAN) |
+| `early_menopause` | Early menopause (FMP age < 45) | boolean | 1.75 | +0.560 | WHI |
+| `current_hrt` | Current HRT use | boolean | 0.60 | −0.511 | WHI HT arm |
+| `low_calcium` | Low dietary calcium (<700 mg/day) | boolean | 1.15 | +0.140 | IOM / NOF |
 
 **Ethnicity baseline adjustment** — one coefficient, UK-calibrated:
 
-| Feature | Type | Placeholder HR | Placeholder β |
-|---|---|---|---|
-| Ethnicity | 4-level categorical (white / S.Asian / E.Asian / Black African) | 1.00 / 0.95 / 0.80 / 0.50 | 0 / −0.051 / −0.223 / −0.693 |
+| Key | Label | Type | Placeholder HR | Placeholder β | Citation (placeholder) |
+|---|---|---|---|---|---|
+| `ethnicity_baseline` | Ethnicity | 4-level categorical (white / S.Asian / E.Asian / Black African) | 1.00 / 0.95 / 0.80 / 0.50 | 0 / −0.051 / −0.223 / −0.693 | UK FRAX + Cauley et al. 2005 |
 
 Exact values and per-coefficient DOI citations will be pinned in `lib/model-weights.ts`. Verified values from the clinical team may change magnitudes and may add or remove features — the interface is the contract, not the individual values.
 
@@ -347,7 +440,9 @@ Hand-curated to produce:
 ### 8.4 Demo determinism
 
 - **Sarah Chen (p-001)** — hand-authored, high-risk, coherent biography (age 49, BMI 19.2, late perimenopausal, current smoker, paternal hip fracture, low dietary calcium, European ancestry). Always top of the GP dashboard when sorted by risk score descending. Her detail page is the hero of the live demo.
-- **Three patients with `latest_alert` pre-populated**: `p-001` (Sarah, high), `p-014` (moderate-high), `p-037` (high). The patient-portal view defaults to one of these so the portal shows a non-empty state immediately.
+- **The `/demo/patient` route defaults to `p-001` (Sarah) unconditionally.** On first visit, `DemoState.active_patient_id` is initialized to `"p-001"`. Any other patient portal state is only reachable via the explicit `?as=<patient_id>` query param, after which the query param is stripped via redirect and the cookie carries the new value forward. This guarantees the live-demo flow always lands on Sarah's portal when the presenter switches roles mid-pitch.
+- **Three patients with `latest_alert` pre-populated**: `p-001` (Sarah, high), `p-014` (moderate-high), `p-037` (high). This ensures the default patient portal always shows a non-empty "your GP has flagged you" state.
+- **Screen #9 (low-risk state)** is reached via `/demo/patient?as=p-040` (or any `latest_alert: null` patient id). This is documented in the README so the presenter can show the low-risk flow on demand.
 - The remaining 79 patients are procedurally generated by a one-off Node script (realistic name pools, realistic BMI and menopausal-stage distributions) and then manually sanity-checked before commit. The generator script is disposable; only `patients.json` is committed.
 
 ## 9. Email flow (stubbed)
@@ -388,7 +483,52 @@ No other files change. The UI already handles the `simulated: boolean` flag.
 
 ### 9.3 Templates
 
-Only the **high-risk template** is authored for MVP. It lives in `lib/email-templates.ts` as a pure function `highRiskAlert(patient: Patient, gp: { name, practice }) => { subject, body }`. See the brainstorming transcript for the canonical wording; final copy is committed to the template file in Phase 0 or early Phase 1.
+Only the **high-risk template** is authored for MVP. It lives in `lib/email-templates.ts` as a pure function:
+
+```typescript
+export function highRiskAlert(
+  patient: Patient,
+  gp: { name: string; practice: string }
+): { subject: string; body: string }
+```
+
+The canonical wording, frozen in Phase 0 and consumed unchanged by Subagent A's `AlertComposer`:
+
+**Subject:** `From {practice} — a note about your bone health`
+
+**Body:**
+
+```
+Dear {first_name},
+
+I'm {gp_name}, one of the GPs at {practice}.
+I'm writing because we recently reviewed your records as part of a
+new preventative screening programme for women in perimenopause.
+
+Based on several factors in your history, you've been identified
+as someone who would benefit from a conversation about bone health
+in the next few weeks. This is preventative, not urgent — but the
+changes that happen to bones in the years around menopause are
+easier to address early than later.
+
+I'd like to invite you to:
+
+  1. Book a 15-minute appointment with me to discuss next steps
+  2. Read a short guide we've prepared on what's happening and
+     what you can do about it — your patient portal has this
+  3. Consider requesting a DEXA bone density scan, which I can
+     arrange if it's appropriate after we've spoken
+
+This isn't a diagnosis. It's an invitation to a conversation.
+If you'd rather not take this up, no action is needed — just let
+us know and we'll remove you from the programme.
+
+Warm regards,
+{gp_name}
+{practice}
+```
+
+Token substitutions are literal string replacements — no templating engine required. `AlertComposer` loads this pre-filled text into an editable textarea so the GP can tweak wording before hitting send; the edited version (not the original) is what flows to `/api/send-alert`.
 
 Moderate- and low-risk patient detail pages do not render the *Send alert* button at all — they show passive "Monitor — review in 6 months" (moderate) or "No action required — patient can self-access education materials" (low) copy instead. This matches the clinical reality: the tool targets intervention, not noise.
 
@@ -414,7 +554,7 @@ Subagent C owns all copy. Hero headline, stat card wording, how-it-works labels,
 
 ## 11. Open items and follow-up tasks
 
-All tracked in the in-session task list.
+Tracked in the in-session task list. Task IDs #1–#6 are brainstorming-workflow tasks (clarifying questions, design presentation, spec write, spec review, user review, plan transition) and do not represent project deliverables. Implementation-relevant tasks begin at #7.
 
 | Task | Status | Blocker |
 |---|---|---|
@@ -427,22 +567,22 @@ All tracked in the in-session task list.
 
 ## 12. Definition of done
 
-- `pnpm dev` runs the app locally with zero configuration.
+- `pnpm dev` runs the app locally with zero configuration (no env vars required).
 - `pnpm test` runs unit tests on `lib/risk-model.ts` and passes.
 - `vercel deploy` produces a live URL.
-- On the live URL, the following end-to-end flow succeeds without error:
+- On the live URL, the following end-to-end flow succeeds without error in a freshly-incognito browser:
   1. Land on `/`.
-  2. Click *See the GP view*.
-  3. The dashboard shows Sarah Chen at the top, flagged red.
-  4. Click her row.
-  5. The feature contribution chart renders with all non-zero terms visible, each bar hoverable for citation info.
-  6. Click *Send alert*.
-  7. The alert composer opens pre-filled with the high-risk template.
-  8. Click *Send*.
-  9. The AlertPreviewModal displays the rendered email with a "Delivered (simulated)" tag.
-  10. Switch role to *Patient view* from the header dropdown.
-  11. The patient portal shows Sarah's pre-baked alert from Dr. Hassan.
-  12. Navigate to the education library and see 4–6 content cards.
-  13. Navigate to self-referral, fill the form, submit, see the success state.
+  2. Click *See the GP view*. Landing on `/demo/gp` initializes `DemoState` to `{ role: "gp", active_patient_id: "p-001" }`.
+  3. The dashboard shows Sarah Chen (`p-001`) at the top of the sort-by-risk-descending ordering, flagged red.
+  4. Click her row — navigates to `/demo/gp/patients/p-001`.
+  5. The `FeatureContributionChart` renders every non-zero `RiskContribution` as a horizontal bar sorted by absolute magnitude; hovering any bar reveals the stored `citation` string and the raw `hazard_ratio`.
+  6. Click *Send alert*. The `AlertComposer` opens pre-filled from `highRiskAlert(patient, gp)`.
+  7. Click *Send* in the composer — the client POSTs an `AlertRequest` to `/api/send-alert`.
+  8. The handler returns `{ simulated: true, preview: AlertPreview }`; the `AlertPreviewModal` opens showing the rendered email with a "Delivered (simulated)" tag and the `rendered_at` timestamp.
+  9. Close the modal. Use the header role switcher to flip to *Patient view*. This mutates `DemoState.role` to `"patient"` and navigates to `/demo/patient` with `active_patient_id` unchanged (still `p-001`).
+  10. The patient portal renders Sarah's pre-baked `latest_alert` from Dr. Amira Hassan at the top of the page.
+  11. Navigate to `/demo/patient/education` and see 4–6 content cards.
+  12. Navigate to `/demo/patient/refer`, fill the form, submit, see the success state.
+  13. Visit `/demo/patient?as=p-040` directly; the low-risk portal state renders (education library + "your risk is currently low" copy), and the query param is stripped via redirect so the URL reads `/demo/patient`.
 
 No extras. No cleverness. The above flow is the definition of done.
