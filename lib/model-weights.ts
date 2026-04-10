@@ -53,24 +53,15 @@
  */
 
 // ===========================================================================
-// TYPES — will migrate to lib/types.ts in spec Phase 0
+// TYPES
 // ===========================================================================
+//
+// Ethnicity, MenopausalStage, and RiskTier are owned by lib/types.ts as of
+// Phase 0 Task 0.4 (the frozen contract surface consumed by Phase 1). They
+// are imported here so CoefficientEntry / CategoricalFeature<K> can continue
+// to reference the same string-literal unions without duplication.
 
-export type Ethnicity =
-  | "white"
-  | "south_asian"
-  | "east_asian"
-  | "black_african"
-  | "other";
-
-export type MenopausalStage =
-  | "premenopausal"
-  | "early_perimenopausal"
-  | "late_perimenopausal"
-  | "postmenopausal_under_5yr"
-  | "postmenopausal_5_10yr";
-
-export type RiskTier = "low" | "moderate" | "high";
+import type { Ethnicity, MenopausalStage, RiskTier } from "@/lib/types";
 
 export type Confidence = "high" | "medium" | "low";
 
