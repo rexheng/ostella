@@ -20,7 +20,7 @@ const STEPS: Step[] = [
   {
     icon: HeartPulse,
     title: "The patient acts",
-    body: "A low-friction patient portal lets her book a DEXA, self-refer for HRT review, or work through the bone-health education library &mdash; whichever is the right next step.",
+    body: "A low-friction patient portal lets her book a DEXA, self-refer for HRT review, or work through the bone-health education library — whichever is the right next step.",
   },
 ];
 
