@@ -6,8 +6,7 @@
 "use client";
 
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { CheckCircle2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -16,7 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 const SYMPTOMS = [
   "Hot flushes",
   "Sleep disturbance",
-  "Bone or joint pain",
+  "Joint or muscle aches",
   "Unexpected weight change",
   "Mood changes",
   "Heavy or irregular periods",
@@ -27,68 +26,85 @@ export function SelfReferralForm() {
 
   if (submitted) {
     return (
-      <Card className="border-emerald-200 bg-emerald-50 p-6 text-center">
-        <h2 className="text-lg font-semibold text-emerald-900">
+      <div className="rounded-2xl border border-cream-200 bg-cream-50 p-12 text-center">
+        <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-sage-50 text-sage-700">
+          <CheckCircle2 className="h-7 w-7" strokeWidth={1.5} />
+        </div>
+        <h2 className="mt-6 font-display text-3xl font-medium text-ink-900">
           Request received
         </h2>
-        <p className="mt-2 text-sm text-emerald-800">
-          Your request has been sent to Regent&apos;s Park Medical Centre. A
-          member of the team will contact you within two working days.
+        <p className="mx-auto mt-4 max-w-[42ch] text-[15px] leading-relaxed text-ink-500">
+          Your request has been sent to Regent&rsquo;s Park Medical Centre. A
+          member of the team will be in touch within two working days.
         </p>
-      </Card>
+      </div>
     );
   }
 
   return (
-    <Card className="p-6">
+    <div className="rounded-2xl border border-cream-200 bg-cream-100 p-10">
       <form
         onSubmit={(e) => {
           e.preventDefault();
           setSubmitted(true);
         }}
-        className="space-y-5"
+        className="space-y-8"
       >
         <div>
-          <Label className="text-sm font-medium">
+          <Label className="text-sm font-medium text-ink-700">
             Which of these are you experiencing?
           </Label>
-          <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {SYMPTOMS.map((s) => (
               <label
                 key={s}
-                className="flex cursor-pointer items-center gap-2 text-sm text-slate-700"
+                className="flex cursor-pointer items-center gap-3 rounded-xl border border-cream-200 bg-cream-50 px-4 py-3 text-[14px] text-ink-700 transition hover:border-sage-200"
               >
-                <Checkbox />
+                <Checkbox className="border-cream-300 data-[state=checked]:bg-sage-600 data-[state=checked]:border-sage-600" />
                 <span>{s}</span>
               </label>
             ))}
           </div>
         </div>
         <div>
-          <Label htmlFor="preferred" className="text-sm font-medium">
+          <Label
+            htmlFor="preferred"
+            className="text-sm font-medium text-ink-700"
+          >
             Preferred time
           </Label>
           <Input
             id="preferred"
-            className="mt-2"
+            className="mt-3 rounded-xl border-cream-200 bg-cream-50 text-ink-900 placeholder:text-ink-500 focus-visible:border-sage-400 focus-visible:ring-sage-400"
             placeholder="e.g. Weekday mornings"
           />
         </div>
         <div>
-          <Label htmlFor="message" className="text-sm font-medium">
-            Anything else to share?
+          <Label
+            htmlFor="message"
+            className="text-sm font-medium text-ink-700"
+          >
+            Anything else you&rsquo;d like your GP to know?
           </Label>
           <Textarea
             id="message"
             rows={4}
-            className="mt-2"
-            placeholder="Optional"
+            className="mt-3 rounded-xl border-cream-200 bg-cream-50 text-ink-900 placeholder:text-ink-500 focus-visible:border-sage-400 focus-visible:ring-sage-400"
+            placeholder="Optional — a sentence or two is plenty."
           />
         </div>
-        <div className="flex justify-end">
-          <Button type="submit">Submit request</Button>
+        <div className="flex justify-end pt-2">
+          <button
+            type="submit"
+            className="inline-flex items-center gap-2 rounded-full bg-sage-600 px-7 py-3 text-[15px] font-medium text-cream-50 transition hover:-translate-y-0.5 hover:bg-sage-700 hover:shadow-sm"
+          >
+            Send request
+            <span aria-hidden className="transition-transform">
+              &rarr;
+            </span>
+          </button>
         </div>
       </form>
-    </Card>
+    </div>
   );
 }
