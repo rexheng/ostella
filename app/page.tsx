@@ -1,4 +1,5 @@
 import { Hero } from "@/components/marketing/Hero";
+import { StandardsMarquee } from "@/components/marketing/StandardsMarquee";
 import { StatCards } from "@/components/marketing/StatCards";
 import { WhyPerimenopause } from "@/components/marketing/WhyPerimenopause";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
@@ -8,8 +9,9 @@ import { AboutFooter } from "@/components/marketing/AboutFooter";
 
 export default function Home() {
   return (
-    <main className="bg-white">
+    <main className="bg-cream-50">
       <Hero />
+      <StandardsMarquee />
       <StatCards />
       <WhyPerimenopause />
       <HowItWorks />

@@ -1,64 +1,45 @@
-import { Activity, ClipboardList, HeartPulse } from "lucide-react";
-
-type Step = {
-  icon: typeof Activity;
-  title: string;
-  body: string;
-};
-
-const STEPS: Step[] = [
+const STEPS = [
   {
-    icon: Activity,
-    title: "We score every woman on the GP's list",
-    body: "A transparent 14-feature model ranks the practice's perimenopausal and post-menopausal women by 10-year fragility-fracture risk, updated whenever the EHR changes.",
+    num: "01",
+    title: "Score the cohort",
+    body: "Every woman on a GP's list is scored against a transparent linear model built on published clinical evidence.",
   },
   {
-    icon: ClipboardList,
-    title: "The GP reviews flagged cases and sends an invite",
-    body: "Flagged patients surface in a triage dashboard with per-feature contributions and literature citations. The GP approves, edits, and sends each outbound message.",
+    num: "02",
+    title: "Clinician reviews",
+    body: "A named GP sees the model's reasoning per patient and decides whether to initiate a preventative conversation.",
   },
   {
-    icon: HeartPulse,
-    title: "The patient acts",
-    body: "A low-friction patient portal lets her book a DEXA, self-refer for HRT review, or work through the bone-health education library — whichever is the right next step.",
+    num: "03",
+    title: "Patient acts",
+    body: "Books an appointment, reads the education library, or self-refers — from a portal designed for trust, not engagement metrics.",
   },
-];
+] as const;
 
 export function HowItWorks() {
   return (
-    <section className="bg-white py-20">
+    <section className="bg-cream-100 py-24">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-12 max-w-2xl">
-          <span className="text-sm font-medium uppercase tracking-wide text-ostella-600">
-            How it works
-          </span>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ostella-900">
-            Score. Review. Act.
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {STEPS.map((step, i) => {
-            const Icon = step.icon;
-            return (
-              <div
-                key={step.title}
-                className="flex flex-col gap-4 rounded-lg border border-ostella-100 bg-ostella-50/30 p-6"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-ostella-600 text-sm font-semibold text-white">
-                    {i + 1}
-                  </div>
-                  <Icon className="h-5 w-5 text-ostella-700" />
-                </div>
-                <h3 className="text-lg font-semibold text-ostella-900">
-                  {step.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-ostella-900/80">
-                  {step.body}
-                </p>
+        <p className="text-xs font-medium uppercase tracking-[0.15em] text-lavender-600">
+          How it works
+        </p>
+        <h2 className="mt-3 max-w-[20ch] font-display text-4xl font-light leading-[1.1] tracking-tight text-ink-900 md:text-5xl lg:text-6xl">
+          Three steps from screening to action.
+        </h2>
+        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+          {STEPS.map((step) => (
+            <div key={step.num} className="rounded-2xl bg-cream-50 p-8">
+              <div className="font-display text-6xl font-light leading-none text-lavender-500">
+                {step.num}
               </div>
-            );
-          })}
+              <h3 className="mt-4 text-2xl font-medium tracking-tight text-ink-900">
+                {step.title}
+              </h3>
+              <p className="mt-3 text-base leading-relaxed text-ink-500">
+                {step.body}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

@@ -1,48 +1,69 @@
-import { ShieldCheck } from "lucide-react";
+const CONTRIBUTIONS = [
+  { label: "Parent hip fracture", value: "+0.432", width: "36%" },
+  { label: "Current smoker", value: "+0.223", width: "19%" },
+  { label: "BMI < 20", value: "+0.247", width: "21%" },
+  { label: "Late perimenopausal", value: "+0.039", width: "3%" },
+  { label: "Low dietary calcium", value: "+0.049", width: "4%" },
+] as const;
 
 export function ModelTransparency() {
   return (
-    <section className="bg-ostella-50 py-20">
-      <div className="mx-auto max-w-4xl px-6">
-        <span className="text-sm font-medium uppercase tracking-wide text-ostella-600">
-          The model is not a black box
-        </span>
-        <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ostella-900">
-          Every coefficient has a citation.
+    <section className="bg-cream-50 py-24">
+      <div className="mx-auto max-w-6xl px-6">
+        <p className="text-xs font-medium uppercase tracking-[0.15em] text-lavender-600">
+          Not a black box
+        </p>
+        <h2 className="mt-3 max-w-[24ch] font-display text-4xl font-light leading-[1.1] tracking-tight text-ink-900 md:text-5xl lg:text-6xl">
+          A model a clinician can audit in ten minutes.
         </h2>
+        <p className="mt-4 max-w-[60ch] text-lg leading-relaxed text-ink-500 md:text-xl">
+          Every weight traces to a primary-source paper. Every contribution is
+          visible per patient. No neural network, no LLM &mdash; a transparent
+          linear model, delivered by clinicians, verifiable by anyone.
+        </p>
 
-        <div className="mt-6 flex items-start gap-3 rounded-md border border-ostella-300 bg-white p-4">
-          <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-ostella-700" />
-          <p className="text-sm font-medium text-ostella-900">
-            Literature-verified weights &mdash; cohort calibration in progress.
-          </p>
-        </div>
-
-        <div className="mt-6 space-y-4 text-base leading-relaxed text-ostella-900/90">
-          <p>
-            Ostella&rsquo;s risk score is a transparent linear model over 14
-            features: age, BMI, parental hip fracture history, menopause
-            stage, HRT exposure, smoking, alcohol, glucocorticoid use, prior
-            fracture, and others. Each coefficient is a log-hazard ratio
-            traced to a primary-source DOI &mdash; the clinical team has
-            delivered the verified weights, and the risk engine can be
-            audited feature by feature.
-          </p>
-          <p>
-            Tier thresholds (low / moderate / high) have been calibrated
-            against an 82-patient synthetic cohort so that the demo sort
-            order is reproducible. Ongoing calibration work replaces the
-            synthetic cohort with prospective real-patient data before any
-            clinical pilot.
-          </p>
-          <p>
-            <span className="font-medium text-ostella-700 underline decoration-ostella-300 decoration-dotted underline-offset-4">
-              Read the methodology
-            </span>{" "}
-            <span className="text-sm text-ostella-700/70">
-              (docs/model-calibration.md)
+        <div className="mt-12 overflow-hidden rounded-2xl border border-cream-200 bg-white shadow-sm">
+          <div className="flex items-start justify-between gap-6 border-b border-cream-200 px-8 py-7">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.15em] text-ink-500">
+                Risk model contributions
+              </p>
+              <p className="mt-3 font-display text-3xl font-medium leading-tight text-ink-900">
+                Sarah Chen
+              </p>
+              <p className="mt-1 text-sm text-ink-500">
+                Relative risk{" "}
+                <span className="font-display font-medium text-ink-900">
+                  2.58&times;
+                </span>{" "}
+                vs reference woman.
+              </p>
+            </div>
+            <span className="inline-flex items-center rounded-full border border-lavender-200 bg-lavender-50 px-3 py-1 text-xs font-medium text-lavender-700">
+              Literature-verified weights
             </span>
-          </p>
+          </div>
+
+          <div className="space-y-3 px-8 py-7">
+            {CONTRIBUTIONS.map((row) => (
+              <div
+                key={row.label}
+                className="grid grid-cols-[180px_1fr_72px] items-center gap-4 text-sm"
+              >
+                <div className="text-right text-ink-700">{row.label}</div>
+                <div className="relative h-6">
+                  <div className="absolute inset-y-0 left-1/2 w-px bg-cream-200" />
+                  <div
+                    className="absolute inset-y-0 left-1/2 rounded-md bg-clinical-high/75"
+                    style={{ width: row.width }}
+                  />
+                </div>
+                <div className="text-right font-display text-sm text-clinical-high">
+                  {row.value}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -1,41 +1,50 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-ostella-50 via-white to-white">
-      <div className="mx-auto max-w-5xl px-6 py-24 sm:py-32">
-        <div className="flex flex-col items-start gap-8">
-          <span className="inline-flex items-center rounded-full border border-ostella-200 bg-white px-3 py-1 text-xs font-medium uppercase tracking-wide text-ostella-700">
-            Research prototype — NHS preventative-care pathway
+    <section className="relative overflow-hidden bg-gradient-to-b from-cream-50 to-cream-100">
+      <div className="mx-auto max-w-6xl px-6 py-32">
+        <span className="mb-6 inline-flex items-center rounded-full border border-sage-200 bg-sage-50 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.12em] text-sage-700">
+          Preventative care · Built for the NHS
+        </span>
+        <h1 className="mb-6 max-w-[18ch] font-display text-5xl font-light leading-[1.05] tracking-tight text-ink-900 md:text-6xl lg:text-7xl">
+          The most preventable
+          <br />
+          women&rsquo;s health crisis,{" "}
+          <span className="italic font-medium text-lavender-600">
+            caught while it still is.
           </span>
-          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-ostella-900 sm:text-5xl">
-            Osteoporosis is preventable.
-            <br />
-            <span className="text-ostella-600">
-              By the time it&rsquo;s diagnosed, it usually isn&rsquo;t.
+        </h1>
+        <p className="mb-10 max-w-[55ch] text-lg leading-relaxed text-ink-500 md:text-xl">
+          Ostella helps NHS GPs identify the women in their practice quietly
+          walking into a preventable decade &mdash; and routes them into a
+          preventative pathway the system already has, but rarely uses in time.
+        </p>
+        <div className="flex flex-wrap gap-4">
+          <Link
+            href="/demo/gp"
+            className="group inline-flex items-center gap-2 rounded-full bg-sage-600 px-7 py-3.5 text-[15px] font-medium text-cream-50 transition hover:-translate-y-0.5 hover:bg-sage-700 hover:shadow-lg"
+          >
+            See the GP view
+            <span
+              aria-hidden
+              className="transition-transform group-hover:translate-x-1"
+            >
+              &rarr;
             </span>
-          </h1>
-          <p className="max-w-2xl text-lg leading-relaxed text-ostella-800/80">
-            Perimenopause is the 5&ndash;8 year window when bone density falls
-            fastest. Ostella helps GPs find the women on their list who are
-            quietly losing that bone &mdash; while there is still time to act.
-          </p>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Button asChild size="lg" className="bg-ostella-600 text-white hover:bg-ostella-700">
-              <Link href="/demo/gp">
-                See the GP view
-                <ArrowRight className="ml-1 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="border-ostella-300 text-ostella-700 hover:bg-ostella-50">
-              <Link href="/demo/patient">
-                See the patient view
-                <ArrowRight className="ml-1 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
+          </Link>
+          <Link
+            href="/demo/patient"
+            className="group inline-flex items-center gap-2 rounded-full border border-sage-300 bg-transparent px-7 py-3.5 text-[15px] font-medium text-sage-700 transition hover:bg-sage-50"
+          >
+            See the patient view
+            <span
+              aria-hidden
+              className="transition-transform group-hover:translate-x-1"
+            >
+              &rarr;
+            </span>
+          </Link>
         </div>
       </div>
     </section>
