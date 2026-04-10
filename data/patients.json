@@ -29,7 +29,7 @@
       "sent_at": "2026-04-08T11:15:00Z",
       "sent_by": "Dr. Amira Hassan",
       "risk_level_at_send": "high",
-      "message": "Dear Sarah,\n\nI'm Dr. Amira Hassan, one of the GPs at Regent's Park Medical Centre.\nI'm writing because we recently reviewed your records as part of a\nnew preventative screening programme for women in perimenopause.\n\nBased on several factors in your history, you've been identified\nas someone who would benefit from a conversation about bone health\nin the next few weeks. This is preventative, not urgent — but the\nchanges that happen to bones in the years around menopause are\neasier to address early than later.\n\nI'd like to invite you to:\n\n  1. Book a 15-minute appointment with me to discuss next steps\n  2. Read a short guide we've prepared on what's happening and\n     what you can do about it — your patient portal has this\n  3. Consider requesting a DEXA bone density scan, which I can\n     arrange if it's appropriate after we've spoken\n\nThis isn't a diagnosis. It's an invitation to a conversation.\nIf you'd rather not take this up, no action is needed — just let\nus know and we'll remove you from the programme.\n\nWarm regards,\nDr. Amira Hassan\nRegent's Park Medical Centre"
+      "message": "Dear Sarah,\n\nI'm Dr. Amira Hassan, one of the GPs at Regent's Park Medical Centre.\nI'm writing because we recently reviewed your records as part of a\nnew preventative health programme for women in perimenopause.\n\nBased on several factors in your history, you've been identified\nas someone who would benefit from a conversation about your\nlong-term health in the next few weeks. This is preventative, not\nurgent — but the changes that happen in the years around menopause\nare easier to act on early than later.\n\nI'd like to invite you to:\n\n  1. Book a 15-minute appointment with me to discuss next steps\n  2. Read a short guide we've prepared on what's happening and\n     what you can do about it — your patient portal has this\n  3. Consider a baseline preventative health check, which I can\n     arrange if it's appropriate after we've spoken\n\nThis isn't a diagnosis. It's an invitation to a conversation.\nIf you'd rather not take this up, no action is needed — just let\nus know and we'll remove you from the programme.\n\nWarm regards,\nDr. Amira Hassan\nRegent's Park Medical Centre"
     }
   },
   {
@@ -398,7 +398,7 @@
       "sent_at": "2026-04-08T09:22:00Z",
       "sent_by": "Dr. Amira Hassan",
       "risk_level_at_send": "high",
-      "message": "I wanted to follow up on the note about bone health…"
+      "message": "I wanted to follow up on the note from your preventative health review…"
     }
   },
   {
@@ -1047,7 +1047,7 @@
       "sent_at": "2026-04-07T14:10:00Z",
       "sent_by": "Dr. Amira Hassan",
       "risk_level_at_send": "high",
-      "message": "Following up on your bone health review…"
+      "message": "Following up on your preventative care review…"
     }
   },
   {

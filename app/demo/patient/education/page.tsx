@@ -43,7 +43,7 @@ const ARTICLES: EducationArticle[] = [
     slug: "talking-to-your-gp",
     category: "Conversation",
     title: "How to have this conversation with your GP",
-    lede: "What to ask, what to expect, and when a DEXA scan is worth requesting. A short, practical script for the ten minutes you'll have in the room.",
+    lede: "What to ask, what to expect, and when to push for a deeper preventative check. A short, practical script for the ten minutes you'll have in the room.",
     body: "",
   },
   {
