@@ -97,6 +97,7 @@ export function AlertComposer({
           open={true}
           onClose={() => setResponse(null)}
           response={response}
+          patient={patient}
         />
       )}
     </>

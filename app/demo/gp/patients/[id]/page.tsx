@@ -1,7 +1,7 @@
 // app/demo/gp/patients/[id]/page.tsx
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import { getPatient } from "@/lib/patients";
 import { scorePatient } from "@/lib/risk-model";
 import { RiskBadge } from "@/components/RiskBadge";
@@ -40,7 +40,16 @@ export default function PatientDetailPage({
             {patient.ethnicity.replace(/_/g, " ")}
           </p>
         </div>
-        <RiskBadge tier={scored.tier} className="px-5 py-2 text-sm" />
+        <div className="flex items-center gap-3">
+          <Link
+            href={`/demo/patient?as=${patient.id}`}
+            className="inline-flex items-center gap-1.5 rounded-full border border-cream-200 bg-cream-50 px-4 py-2 text-[12px] font-medium text-ink-700 transition hover:-translate-y-0.5 hover:border-sage-300 hover:text-sage-700 hover:shadow-sm"
+          >
+            Open {patient.name.split(" ")[0]}&rsquo;s inbox
+            <ExternalLink className="h-3 w-3" strokeWidth={2} />
+          </Link>
+          <RiskBadge tier={scored.tier} className="px-5 py-2 text-sm" />
+        </div>
       </header>
 
       {/* Risk model contributions card — the money shot */}
