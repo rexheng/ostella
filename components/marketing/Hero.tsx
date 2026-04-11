@@ -1,9 +1,13 @@
 import Link from "next/link";
+import { PinkOrb } from "@/components/marketing/PinkOrb";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-cream-50 to-cream-100">
-      <div className="mx-auto max-w-6xl px-6 py-32">
+    <section className="relative overflow-hidden bg-gradient-to-b from-cream-50 via-[#fbf3ef] to-[#f9ebe7]">
+      {/* Cursor-tracked pink glow — decorative, behind content */}
+      <PinkOrb />
+
+      <div className="relative z-10 mx-auto max-w-6xl px-6 py-32">
         <span className="mb-6 inline-flex items-center rounded-full border border-sage-200 bg-sage-50 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.12em] text-sage-700">
           Preventative care · Built for the NHS
         </span>
